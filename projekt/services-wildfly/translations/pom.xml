@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>services-wildfly</artifactId>
+        <groupId>com.example.webservices</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.webservices.rest.wildfly</groupId>
+    <artifactId>transations</artifactId>
+    <packaging>war</packaging>
+    <name>services-wildfly: ${project.artifactId}</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.example.webservices.libs</groupId>
+            <artifactId>translation-service</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <configuration>
+                    <port>9991</port>
+                    <java-opts>
+                        <java-opt>-Djboss.socket.binding.port-offset=1</java-opt>
+                    </java-opts>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
