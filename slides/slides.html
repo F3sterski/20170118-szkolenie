@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Jakub Marchwicki"><title>Web Services development</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="css/custom_serif.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><style>/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+/*pre.CodeRay {background-color:#f7f7f8;}*/
+.CodeRay .line-numbers{border-right:1px solid #d8d8d8;padding:0 0.5em 0 .25em}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.5em;color:rgba(0,0,0,.3)}
+.CodeRay .line-numbers strong{color:rgba(0,0,0,.4)}
+table.CodeRay{border-collapse:separate;border-spacing:0;margin-bottom:0;border:0;background:none}
+table.CodeRay td{vertical-align: top;line-height:1.45}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.line-numbers>pre{padding:0;color:rgba(0,0,0,.3)}
+table.CodeRay td.code{padding:0 0 0 .5em}
+table.CodeRay td.code>pre{padding:0}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#000}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}</style><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Web Services development</h1><p><small>Jakub Marchwicki</small></p></section><section id="slide_zakres"><h2>Zakres</h2><div class="ulist"><ul><li><p>Wprowadzenie do usług sieciowych</p><div class="ulist"><ul><li><p>Usługi sieciowe vs. tradycyjne API</p></li></ul></div></li><li><p>REST - integracja poprzez zasoby</p><div class="ulist"><ul><li><p>Projektowanie i definiowanie usług</p></li><li><p>Klient REST w języku Java</p></li></ul></div></li><li><p>SOAP - wywołania usług / metod zdanych</p><div class="ulist"><ul><li><p>Struktura i definiowanie dokumentu XML</p></li><li><p>Bezpośrednie i pośrednie (stub) wywołanie usług zdalnych</p></li></ul></div></li><li><p>Bezpieczeństwo usług sieciowych</p></li></ul></div></section>
+<section><section id="slide_api"><h2>API</h2><div class="ulist"><div class="title">Application Programming Interfaces</div><ul><li><p>opis sposobu komunikacji programów komputerowych</p><div class="ulist"><ul><li><p>niezależny od medium: pamięć, dysk, sieć</p></li><li><p>może dotyczyć komunikacji w obrębie jednego programu, pomiędzy programami, pomiędzy systemami</p></li></ul></div></li><li><p>dostarcza odpowiednich specyfikacji i dokumentacji</p><div class="ulist"><ul><li><p>struktury danych,</p></li><li><p>klasy, obiekty, interfejsy</p></li><li><p>protokoły komunikacyjne</p></li></ul></div></li></ul></div></section><section id="slide_po_co_api_dla_konsumenta"><h2>Po co API? Dla konsumenta</h2><div class="ulist"><ul><li><p>Dostarcza więcej kodu niźli samodzielnie bylibyśmy w stanie napisać</p><div class="ulist"><ul><li><p>Często w lepszej jakości niż bylibyśmy w stanie napisać</p></li></ul></div></li><li><p>Dostarcza strukturę</p><div class="ulist"><ul><li><p>Rozgraniczenie pomiędzy rzeczami którymi musimy się przejmować i które po prostu są</p></li><li><p>Elementy które przestają być naszą odpowiedzialnością</p></li><li><p>Elementy na które nie mamy wpływu</p></li></ul></div></li></ul></div></section><section id="slide_kiedy_nie_uywa_api"><h2>Kiedy nie używać API?</h2><div class="ulist"><ul><li><p>Ograniczenie liczby zależności</p><div class="ulist"><ul><li><p>Można samodzielnie napisać serwer WWW, albo użyć istniejącego</p></li><li><p>Excel motto: <em>Find the dependencies&#8201;&#8212;&#8201;and eliminate them</em></p></li></ul></div></li><li><p>Każda zależność to potencjalne błędy które możemy / nie możemy poprawić</p></li></ul></div>
+<div class="quoteblock"><blockquote>If it&#8217;s a core business function&#8201;&#8212;&#8201;do it yourself, no matter what</blockquote><div class="attribution">&#8212; Joel Spolsky</div></div></section><section id="slide_po_co_api_dla_dostawcy"><h2>Po co API? Dla dostawcy</h2><div class="dlist"><dl><dt class="hdlist1">Nie tylko strona WWW</dt><dd><div class="ulist"><ul><li><p>Użytkownicy korzystają z aplikacji mobilnej</p></li></ul></div></dd><dt class="hdlist1">API dla klientów partnerów</dt><dd><div class="ulist"><ul><li><p>Klienci / użytkownicy samodzielnie rozwijają aplikacje w oparciu o dostarczony szkielet</p></li><li><p>Większe możliwości integracyjne z klientami i partnerami</p></li></ul></div></dd><dt class="hdlist1">Udostępnienie danych</dt><dd><div class="ulist"><ul><li><p>Klienci / użytkownicy oczekują dostępu do danych (samodzielnie <em>scrapują</em> strony)</p></li><li><p>Większa elastyczność w dostarczaniu danych (np. rozkłady jazdy, dane finansowe)</p></li></ul></div></dd></dl></div></section><section id="slide_po_co_api"><h2>Po co API?</h2><div class="ulist"><div class="title">Internet na przestrzeni lat</div><ul><li><p><strong>1994</strong> - <em>"get me a domain and a page" era</em></p></li><li><p><strong>2000</strong> - <em>"make my pages interactive and put people on it" era</em></p></li><li><p><strong>2010</strong> - <em>"get rid of pages and glue APIs and people together" era</em></p></li></ul></div></section><section id="slide_czym_jest_api"><h2>Czym jest API?</h2><div class="ulist"><div class="title">To nie tylko kod</div><ul><li><p>Dokładny opis funkcjonalny, funkcjonalności dostarczanej przez API</p></li><li><p>Roadmapa - kiedy poszczególne elementy funkcjonalne będą dostępne i jak będą się zmieniać</p></li><li><p>Dodatkowe ograniczenia techniczne; limity korzystania z API (np. liczba równoległych połączeń, liczba połączeń na godzinę)</p></li><li><p>Mechanizm dostępu do API</p></li><li><p>Dokumentacja techniczna</p></li><li><p>Przykłady: fragmenty kodu, przykładowe programy klienckie</p></li><li><p>Informacje operacyjne - dostępność, monitoring (<a href="https://status.github.com/" class="bare">https://status.github.com/</a>)</p></li></ul></div></section><section id="slide_nim_zaczniemy_pisa_kod"><h2>Nim zaczniemy pisać kod</h2><div class="dlist"><dl><dt class="hdlist1">Po co tworzymy API? Jakie mamy cele (biznesowe)</dt><dd><div class="ulist"><ul><li><p>Jaki jest cel?</p></li><li><p>Co staramy się osiągnąć?</p></li><li><p>Jaki problem staramy się rozwiązać?</p></li></ul></div></dd><dt class="hdlist1">Jaka jest wizja API</dt><dd><div class="ulist"><ul><li><p>Jakie elementy będą wchodzić w zakres API / jakie nie będą?</p></li><li><p>Jaki jest stan docelowy? Co jest kluczowe do jego osiągnięcia?</p></li><li><p>Jaki są miary sukcesu (kluczowe metryki)? Co jest kluczowe do ich spełnienia?</p></li></ul></div></dd></dl></div></section><section id="slide_nim_zaczniemy_pisa_kod_2"><h2>Nim zaczniemy pisać kod (2)</h2><div class="ulist"><ul><li><p>Kto będzie korzystał z API? Pracownicy, partnerzy, kliencie, zewnętrzni programiści?</p></li><li><p>Co powinno być dostępne poprzez API? Jaki zasoby?</p></li><li><p>Kto powinien mieć dostęp do jakich zasobów?</p></li><li><p>W jaki sposób zasoby powinny być dostępne?</p></li><li><p>Jakie rodzaju aplikacje mają być budowane wykorzystując API?</p></li><li><p>Jaką wartość (biznesową) będą te aplikacji przynosić (organizacji, partnerom)?</p></li><li><p>W przypadku publicznego API, jak zachęcimy do korzystania z niego?</p></li></ul></div></section></section>
+<section><section id="slide_api_2" data-background="images/background.jpg" data-background-size="cover"><h2>API</h2></section><section id="slide_zakres_2"><h2>Zakres</h2><div class="ulist"><ul><li><p>Zasady konsumowania API</p></li><li><p>Zasady konstruowania API - niezmienne od 10 lat</p><div class="ulist"><ul><li><p>Niezależnie czy Java, REST, SOAP</p></li></ul></div></li></ul></div></section><section id="slide_konsumowanie_api"><h2>Konsumowanie API</h2><div class="ulist"><ul><li><p>Związanie się z API to inwestycja.</p><div class="ulist"><ul><li><p>Zakup (licencja)</p></li><li><p>Wdrożenie (integracja)</p></li><li><p>Utrzymanie (nauczenie się API)</p></li></ul></div></li><li><p>Z taki kodem trzeba później żyć - niezależnie jak słaby był</p><div class="ulist"><ul><li><p>Przywiązujemy się do konkretnej technologii / implementacji</p></li></ul></div></li></ul></div></section><section id="slide_zasady_konsumowania_api"><h2>Zasady konsumowania API</h2><div class="dlist"><dl><dt class="hdlist1">Bądź sceptyczny</dt><dd><div class="ulist"><ul><li><p>Biblioteki, frameworki realizują czyjeś konkretne cele</p></li><li><p>Cele mogą się zmieniać, ewaluować - wtedy zmieniają się biblioteki</p></li></ul></div></dd><dt class="hdlist1">Trzymaj biblioteki na wyciągnięcie ręki</dt><dd><div class="ulist"><ul><li><p>Jeżeli używasz w projekcie nie pozwalaj aby przenikały zbyt głęboko<br>
+<em><a href="https://blog.8thlight.com/uncle-bob/2011/09/30/Screaming-Architecture.html">Screaming Architecture</a></em></p></li><li><p>Twórz architektoniczne granice (enkapsulacja)</p></li></ul></div></dd></dl></div></section><section id="slide_entity_control_boundary"><h2>Entity Control Boundary</h2><div class="imageblock" style=""><div class="content"><img src="http://training-course-material.com/images/6/64/EntityControlBoundary.png" alt="EntityControlBoundary"></div></div></section><section id="slide_ecb_elementy"><h2>ECB - elementy</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:10%"><col style="width:90%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="imageblock" style=""><div class="content"><img src="images/uml-ecb-1.png" alt="uml ecb 1" width="302" height="204"></div></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>Pełni taką sama rolę jak na diagramach przypadków użycia:</p></div>
+<div class="ulist"><ul><li><p>osoba fizyczna, organizacja lub system zewnętrzny</p></li><li><p>wchodzi w interakcję z systemem</p></li></ul></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="imageblock" style=""><div class="content"><img src="images/uml-ecb-2.png" alt="uml ecb 2" width="74" height="82"></div></div></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Interfejs (Boundary) - reprezentuje interfejs do systemu, np.: okno konsola, webservice</p></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="imageblock" style=""><div class="content"><img src="images/uml-ecb-3.png" alt="uml ecb 3" width="82" height="82"></div></div></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Kontroler (Control) - reprezentuje logikę przetwarzania</p></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="imageblock" style=""><div class="content"><img src="images/uml-ecb-4.png" alt="uml ecb 4" width="56" height="82"></div></div></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Encja (Entity) - elementy modelu dziedziny</p></td></tr></tbody></table></section><section id="slide_ecb_przykad_atm"><h2>ECB - Przykład ATM</h2><div class="imageblock" style=""><div class="content"><img src="images/uml-ecb-atm-example.png" alt="uml ecb atm example" width="302" height="204"></div></div></section><section id="slide_literatura"><h2>Literatura</h2><div class="ulist"><ul><li><p><a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">How To Design A Good API and Why it Matters - video</a></p></li><li><p>20 API Paradoxes: <a href="https://www.youtube.com/watch?v=VpKeY-4-_ps">video</a> i <a href="https://www.amazon.com/20-API-Paradoxes-Jaroslav-Tulach-ebook/dp/B009NNXPES">książka</a></p></li><li><p><a href="https://dzone.com/articles/how-design-good-regular-api">How to Design a Good, Regular API</a></p></li><li><p><a href="https://blog.jooq.org/2013/02/26/the-golden-rules-of-code-documentation/">The Golden Rules of Code Documentation</a></p></li></ul></div>
+<hr>
+<div class="ulist"><ul><li><p><a href="https://www.cs.umd.edu/class/spring2003/cmsc838p/Process/waterfall.pdf">Orginal waterfall paper</a></p></li><li><p><a href="https://blog.8thlight.com/uncle-bob/2011/09/30/Screaming-Architecture.html">Screaming architecture</a></p><div class="ulist"><ul><li><p><a href="https://www.youtube.com/watch?v=Nsjsiz2A9mg">Clean Architecture - video</a></p></li></ul></div></li><li><p><a href="http://www.codingthearchitecture.com/2016/05/31/agile_software_architecture_documentation.html">Simon Brown - Lightweight documentation that describes what you can&#8217;t get from the code</a></p><div class="ulist"><ul><li><p><a href="https://www.youtube.com/watch?v=oDpdaXt0HQI">Simon Brown - Software architecture as code - video</a></p></li></ul></div></li></ul></div></section></section>
+<section><section id="slide_metody_integracji_systemw" data-background="images/background.jpg" data-background-size="cover"><h2>Metody integracji systemów</h2></section><section id="slide_metody_integracji_systemw_2"><h2>Metody integracji systemów</h2><div class="dlist"><dl><dt class="hdlist1">Ze względu na sposób komunikacji</dt><dd><div class="ulist"><ul><li><p>Współdzielenie zasobów</p></li><li><p>Zdalne wywoływanie metod - RPC (<em>Remote Procedure Call</em>)</p></li><li><p>Wymiana komunikatów</p></li></ul></div></dd><dt class="hdlist1">Ze względu na kanał komunikacji</dt><dd><div class="ulist"><ul><li><p>Wspólny obszar pamięci, wspólna baza danych</p></li><li><p>Komunikacja sieciowa</p><div class="ulist"><ul><li><p>Sockets: RMI (<em>Remote Method Invocation</em>), Kolejki (AMPQ)</p></li><li><p>HTTP: REST, SOAP</p></li></ul></div></li></ul></div></dd></dl></div></section><section id="slide_orientacja_na_metody_soap"><h2>Orientacja na metody (SOAP)</h2><div class="dlist"><dl><dt class="hdlist1">SOAP (1998)</dt><dd><p><strong>S</strong>&#8203;imple <strong>O</strong>&#8203;bject <strong>A</strong>&#8203;ccess <strong>P</strong>&#8203;rotocol</p><div class="ulist"><ul><li><p>Standard, zastępujące specyficzne implementacje RPC</p></li><li><p>Wykorzystanie XML do reprezentacji i przesyłania danych</p></li><li><p>Niezależność od języka programowania</p><div class="ulist"><ul><li><p>Java może komunikować się z serwisem napisanym w .NET i na odwrót</p></li></ul></div></li><li><p>Dokument <strong>WSDL</strong> zawiera komplet informacji niezbędnych do wywołania serwisu</p></li></ul></div></dd></dl></div></section><section id="slide_soap"><h2>SOAP</h2><div class="dlist"><dl><dt class="hdlist1">Komunikat (dokument) SOAP zawiera</dt><dd><div class="ulist"><ul><li><p><strong>body</strong> - treść, element wymagany</p></li><li><p><strong>header</strong> - nagłówki, opcjonalne</p></li></ul></div></dd></dl></div>
+<div class="imageblock" style=""><div class="content"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SOAP.svg/400px-SOAP.svg.png" alt="400px SOAP.svg"></div></div></section><section id="slide_soap_2"><h2>SOAP (2)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="txt language-txt">POST /InStock HTTP/1.1
+Host: www.example.org
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: nnn</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="tag">&lt;soap:Envelope</span>
+<span class="attribute-name">xmlns:soap</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/12/soap-envelope</span><span class="delimiter">&quot;</span></span>
+<span class="attribute-name">soap:encodingStyle</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/12/soap-encoding</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;soap:Body</span> <span class="attribute-name">xmlns:m</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.example.org/stock</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;m:GetStockPrice&gt;</span>
+    <span class="tag">&lt;m:StockName&gt;</span>IBM<span class="tag">&lt;/m:StockName&gt;</span>
+  <span class="tag">&lt;/m:GetStockPrice&gt;</span>
+<span class="tag">&lt;/soap:Body&gt;</span>
+
+<span class="tag">&lt;/soap:Envelope&gt;</span></code></pre></div></div></section><section id="slide_soap_wady"><h2>SOAP - wady</h2><div class="ulist"><ul><li><p>Duży narzut komunikacyjny (dokumenty XML)</p></li><li><p>Czas potrzebny na kodowanie (marshall / unmarshall)</p></li><li><p>Konieczność wygenerowania klas po stronie klient</p></li><li><p>Pełna przenośność jest iluzoryczna</p><div class="ulist"><ul><li><p>Niektórych typów nie da się przenieść pomiędzy .NET i Java</p></li></ul></div></li></ul></div></section><section id="slide_orientacja_na_zasoby"><h2>Orientacja na zasoby</h2><div class="dlist"><dl><dt class="hdlist1">REST (2000)</dt><dd><div class="ulist"><ul><li><p>Podejście REST (Representational State Transfer) - rok 2000</p><div class="ulist"><ul><li><p>tradycyjne techniki i metody HTTP (GET, POST, PUT, DELETE) są w zupełności wystarczające</p></li><li><p>lekkie podejście nie wymagające specjalnych implementacji po stronie klienta</p></li><li><p>unikalny URL reprezentuje komponent usług sieciowych a nie konkretną usługę</p></li><li><p>bezpośrednia dostępność usług ułatwia ich integrację</p></li></ul></div></li></ul></div></dd></dl></div></section></section>
+<section><section id="slide_rest_i_javaee" data-background="images/background.jpg" data-background-size="cover"><h2>REST i JavaEE</h2></section><section id="slide_konfiguracja_serwera_aplikacji"><h2>Konfiguracja serwera aplikacji </h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="keyword">import</span> <span class="include">javax.ws.rs.ApplicationPath</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.core.Application</span>;
+
+<span class="annotation">@ApplicationPath</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/api</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyRestApplication</span> <span class="directive">extends</span> Application { <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Jest to wystarczające dla serwerów JavaEE aby rozpocząć skanowanie ścieżek oraz inicjalizację komponentów JAX-RS</td></tr></table></div></section><section id="slide_konfiguracja_serwera_aplikacji_2"><h2>Konfiguracja serwera aplikacji (2)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@ApplicationPath</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ProfanityCheckApplication</span> <span class="directive">extends</span> Application {
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Class</span>&lt;?&gt;&gt; getClasses() {        <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="predefined-type">Set</span>&lt;<span class="predefined-type">Class</span>&lt;?&gt;&gt; s = <span class="keyword">new</span> <span class="predefined-type">HashSet</span>&lt;&gt;();
+        s.add(EndpointLoggingListener.class);
+        s.add(ProfanityResource.class);
+        <span class="keyword">return</span> s;
+    }
+
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Użycie Jersey w środowisku serwetów (Tomcat) wymaga zdefiniowania klas <em>explicite</em></td></tr></table></div></section><section id="slide_konfiguracja_serwera_aplikacji_3"><h2>Konfiguracja serwera aplikacji (3)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@ApplicationPath</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ProfanityCheckApplication</span> <span class="directive">extends</span> ResourceConfig { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="directive">public</span> ProfanityCheckApplication() {
+        setApplicationName(<span class="string"><span class="delimiter">&quot;</span><span class="content">profanity-check-application</span><span class="delimiter">&quot;</span></span>);
+        register(<span class="keyword">new</span> Binder());
+        register(<span class="keyword">new</span> EndpointLoggingListener());
+        packages(<span class="string"><span class="delimiter">&quot;</span><span class="content">ws.rest</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Klasa <code>ResourceConfig</code> jest specyficzna dla implementacji JAX-RS <em>Jersey</em></td></tr></table></div></section><section id="slide_konfiguracja_serwera_aplikacji_4"><h2>Konfiguracja serwera aplikacji (4)</h2><table class="tableblock frame-all grid-all" style=""><caption class="title">Table 1. Przykładowe możliwości konfiguracyjne JAX-RS</caption><colgroup><col><col><col><col></colgroup><thead><tr><th class="tableblock halign-left valign-top">Warunek</th><th class="tableblock halign-left valign-top">Akcja</th><th class="tableblock halign-left valign-top">Nazwa serwletu</th><th class="tableblock halign-left valign-top">web.xml</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Brak klasy implementującej rozszerzającej klasę <code>Application</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><em>Jersey</em> automatycznie dodaje serwlet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>javax.ws.rs.core.Application</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Konieczne mapowanie w pliku <em>web.xml</em></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Klasa <code>Application</code> zarządzana przez serwlet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Nie ma potrzeby</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Zdefiniowane przez serwlet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Nie ma potrzeby</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Klasa <code>Application</code> <strong>nie</strong> zarządzana przez serwlet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Tworzy serwlet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Pełna nazwa podklasy <code>Application</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Konieczne przy braku adnotacji <code>@ApplicationPath</code></p></td></tr></tbody></table></section><section id="slide_konfiguracja_usugi"><h2>Konfiguracja usługi </h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="keyword">import</span> <span class="include">javax.ejb.Stateless</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.GET</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.Path</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.PathParam</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.Produces</span>;
+<span class="keyword">import</span> <span class="include">javax.ws.rs.core.MediaType</span>;
+<span class="keyword">import</span> <span class="include">java.time.LocalDate</span>;
+
+<span class="annotation">@Stateless</span>  <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="annotation">@Path</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/hello</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">Service</span> {
+
+    <span class="annotation">@Path</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/{name}</span><span class="delimiter">&quot;</span></span>)    <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="annotation">@GET</span>    <i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="annotation">@Produces</span>(MediaType.APPLICATION_JSON)   <i class="conum" data-value="5"></i><b>(5)</b>
+    <span class="directive">public</span> HelloMessage hello(<span class="annotation">@PathParam</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> name) { <i class="conum" data-value="6"></i><b>(6)</b>
+        <span class="keyword">return</span> <span class="keyword">new</span> HelloMessage(generateId(), <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello, </span><span class="delimiter">&quot;</span></span> + name, LocalDate.now());
+    }
+}</code></pre></div></div></section><section id="slide_konfiguracja_usugi_2"><h2>Konfiguracja usługi (2)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Context</span>
+UriInfo ctx; <i class="conum" data-value="1"></i><b>(1)</b>
+
+<span class="annotation">@POST</span>
+<span class="annotation">@Consumes</span>({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML}) <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="directive">public</span> Response createNewMessage(<span class="annotation">@Valid</span> HelloMessage message) {  <i class="conum" data-value="3"></i><b>(3)</b>
+
+    <span class="comment">//operacje z wykorzystaniem otrzymanej wiadomości</span>
+    <span class="predefined-type">Integer</span> id = service.process(message);
+
+    <span class="keyword">return</span> Response.created(
+            ctx.getBaseUriBuilder()
+                    .segment(<span class="string"><span class="delimiter">&quot;</span><span class="content">hello</span><span class="delimiter">&quot;</span></span>)
+                    .segment(<span class="string"><span class="delimiter">&quot;</span><span class="content">{id}</span><span class="delimiter">&quot;</span></span>).build(id)) <i class="conum" data-value="4"></i><b>(4)</b>
+            .build();
+}</code></pre></div></div></section><section id="slide_konfiguracja_zasobu"><h2>Konfiguracja zasobu </h2><div class="ulist"><ul><li><p>JAX-RS dobrze rodzi sobie z konwersją typów prostych</p></li><li><p>Niektóre typy danych (jak <code>LocalDate</code>, <code>LocalDateTime</code>) nie poddają się automatycznej konwersji i wymagają niezależnej deklaracji serializatora / deserializatora bądź implementacja własnego konwertera</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">HelloMessage</span> {
+    <span class="directive">private</span> <span class="predefined-type">Integer</span> id;
+    <span class="directive">private</span> <span class="predefined-type">String</span> message;
+    <span class="directive">private</span> LocalDate whence; <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Błąd</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_2"><h2>Konfiguracja zasobu (2)</h2><div class="listingblock"><div class="title">Konwersja automatyczna (<em>Jackson</em>)</div><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>com.fasterxml.jackson.datatype<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>jackson-datatype-jsr310<span class="tag">&lt;/artifactId&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">HelloMessage</span> {
+    <span class="directive">private</span> <span class="predefined-type">Integer</span> id;
+
+    <span class="annotation">@NotNull</span> <span class="annotation">@Size</span>(min = <span class="integer">5</span>)
+    <span class="directive">private</span> <span class="predefined-type">String</span> message;
+
+    <span class="annotation">@JsonSerialize</span>(using = LocalDateSerializer.class)   <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="annotation">@JsonDeserialize</span>(using = LocalDateDeserializer.class)   <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="directive">private</span> LocalDate whence;
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Implementacja dostarczona przez bibiotekę Jackson</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_3"><h2>Konfiguracja zasobu (3)</h2><div class="listingblock"><div class="title">Własna implementacja serializatora Jackson</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">LocalDateTimeSerializer</span> <span class="directive">extends</span> JsonSerializer&lt;LocalDateTime&gt; {
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> serialize(LocalDateTime dateTime, JsonGenerator jg,
+            SerializerProvider sp) <span class="directive">throws</span> <span class="exception">IOException</span>, JsonProcessingException {
+        Instant instant = dateTime.toInstant(ZoneOffset.UTC);
+        jg.writeString(DateTimeFormatter.ISO_INSTANT.format(instant)); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Konwersja z obiektu na <code>String</code></td></tr></table></div></section><section id="slide_konfiguracja_zasobu_4"><h2>Konfiguracja zasobu (4)</h2><div class="listingblock"><div class="title">Własna implementacja deserializatora</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">LocalDateTimeDeserializer</span> <span class="directive">extends</span> JsonDeserializer&lt;LocalDateTime&gt; {
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> LocalDateTime deserialize(JsonParser jp,
+            DeserializationContext dc) <span class="directive">throws</span> <span class="exception">IOException</span>, JsonProcessingException {
+        ObjectCodec codec = jp.getCodec();
+        TextNode node = (TextNode)codec.readTree(jp);
+        <span class="predefined-type">String</span> dateString = node.textValue(); <i class="conum" data-value="1"></i><b>(1)</b>
+        Instant instant = Instant.parse(dateString);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        <span class="keyword">return</span> dateTime;
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Konwersja z reprezentacji <em>JSON</em> na obiekt</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_5"><h2>Konfiguracja zasobu (5)</h2><div class="listingblock"><div class="title">Konfiguracja w obrębie obiektu</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">HelloMessage</span> { <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="directive">private</span> <span class="predefined-type">Integer</span> id;
+
+    <span class="annotation">@NotNull</span> <span class="annotation">@Size</span>(min = <span class="integer">5</span>)
+    <span class="directive">private</span> <span class="predefined-type">String</span> message;
+
+    <span class="annotation">@JsonSerialize</span>(using = LocalDateSerializer.class)   <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="annotation">@JsonDeserialize</span>(using = LocalDateDeserializer.class)   <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="directive">private</span> LocalDate whence;
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Tylko i wyłączenie wtedy gdy jesteśmy właścicielem obiektu - możemy go modyfikować</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_6"><h2>Konfiguracja zasobu (6)</h2><div class="listingblock"><div class="title">Konfiguracja mappera</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Provider</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="annotation">@Consumes</span>(MediaType.APPLICATION_JSON) <span class="annotation">@Produces</span>(MediaType.APPLICATION_JSON)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ObjectMapperContextResolver</span> <span class="directive">implements</span> ContextResolver&lt;ObjectMapper&gt; { <i class="conum" data-value="2"></i><b>(2)</b>
+
+    <span class="directive">final</span> ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();
+
+    <span class="directive">public</span> ObjectMapperContextResolver() {
+        SimpleModule module = <span class="keyword">new</span> SimpleModule();
+        module.addSerializer(LocalDateTime.class, <span class="keyword">new</span> LocalDateTimeSerializer());
+        module.addDeserializer(LocalDateTime.class, <span class="keyword">new</span> LocalDateTimeDeserializer());
+        mapper.registerModule(module);
+    }
+
+    <span class="directive">public</span> ObjectMapper getContext(<span class="predefined-type">Class</span>&lt;?&gt; type) {
+        <span class="keyword">return</span> mapper;
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Annotacja <code>@Provider</code> pozwala rozszerzać funkcjonalności JAX-RS</td></tr><tr><td><i class="conum" data-value="2"></i><b>2</b></td><td>Rejestracja dodatku bezpośrendio w mapperze</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_7"><h2>Konfiguracja zasobu (7)</h2><div class="listingblock"><div class="title">Konfiguracja poprzez MixIn</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">DictionaryWord</span> {
+    <span class="directive">public</span> <span class="directive">final</span> <span class="predefined-type">String</span> englishWord;
+    <span class="directive">public</span> <span class="directive">final</span> <span class="predefined-type">String</span> polishWord;
+
+    <span class="directive">public</span> DictionaryWord(<span class="predefined-type">String</span> englishWord, <span class="predefined-type">String</span> polishWord) { <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="local-variable">this</span>.englishWord = englishWord;
+        <span class="local-variable">this</span>.polishWord = polishWord;
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Brak domyślnego konstruktora</td></tr></table></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">abstract</span> <span class="type">class</span> <span class="class">DictionaryWordMixIn</span> {
+    <span class="directive">public</span> DictionaryWordMixIn(<span class="annotation">@JsonProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">englishWord</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> english,
+                               <span class="annotation">@JsonProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">polishWord</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> polish) {
+    }
+}</code></pre></div></div></section><section id="slide_konfiguracja_zasobu_8"><h2>Konfiguracja zasobu (8)</h2><div class="listingblock"><div class="title">Konfiguracja mappera</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Provider</span>
+<span class="annotation">@Consumes</span>(MediaType.APPLICATION_JSON) <span class="annotation">@Produces</span>(MediaType.APPLICATION_JSON)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ObjectMapperContextResolver</span> <span class="directive">implements</span> ContextResolver&lt;ObjectMapper&gt; {
+
+    <span class="directive">final</span> ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();
+
+    <span class="directive">public</span> CustomObjectMapper() {
+        mapper.addMixIn(DictionaryWord.class, DictionaryWordMixIn.class);
+    }
+
+    <span class="directive">public</span> ObjectMapper getContext(<span class="predefined-type">Class</span>&lt;?&gt; type) {
+        <span class="keyword">return</span> mapper;
+    }
+}</code></pre></div></div></section><section id="slide_konfiguracja_zasobu_9"><h2>Konfiguracja zasobu (9)</h2><div class="listingblock"><div class="title">Implementacja <code>XmlAdapter</code></div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="keyword">import</span> <span class="include">javax.xml.bind.annotation.adapters.XmlAdapter</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">LocalDateTimeAdapter</span> <span class="directive">extends</span> XmlAdapter&lt;<span class="predefined-type">String</span>, LocalDateTime&gt; { <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="directive">public</span> LocalDateTime unmarshal(<span class="predefined-type">String</span> dateString) <span class="directive">throws</span> <span class="exception">Exception</span> {
+        Instant instant = Instant.parse(dateString);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        <span class="keyword">return</span> dateTime;
+    }
+
+    <span class="directive">public</span> <span class="predefined-type">String</span> marshal(LocalDateTime dateTime) <span class="directive">throws</span> <span class="exception">Exception</span> {
+        Instant instant = dateTime.toInstant(ZoneOffset.UTC);
+        <span class="keyword">return</span> DateTimeFormatter.ISO_INSTANT.format(instant);
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Gdzie to możliwe JAX-RS wykorzystuje zgodność z mapowaniami XML i używa tych samych klas do konwersji obiektów do postaci JSON. <strong>Nasz kod nie odwołuje się do klas <em>Jackson</em> - jest przenośny</strong>.</td></tr></table></div></section><section id="slide_konfiguracja_zasobu_10"><h2>Konfiguracja zasobu (10)</h2><div class="listingblock"><div class="title">Konfiguracja obiektu</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">HelloMessage</span> {
+    <span class="directive">private</span> <span class="predefined-type">Integer</span> id;
+    <span class="directive">private</span> <span class="predefined-type">String</span> message;
+
+    <span class="annotation">@XmlJavaTypeAdapter</span>(LocalDateTimeAdapter.class)
+    <span class="directive">private</span> LocalDateTime whence;
+}</code></pre></div></div></section><section id="slide_konfiguracja_zasobu_11"><h2>Konfiguracja zasobu (11)</h2><div class="listingblock"><div class="title">Konfiguracja dla pakietu poprzez plik <code>package-info.java</code></div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@XmlJavaTypeAdapters</span>({
+    <span class="annotation">@XmlJavaTypeAdapter</span>(type = LocalDateTime.class,
+                        value = LocalDateTimeAdapter.class)
+})
+<span class="keyword">package</span> <span class="namespace">pakiet.z.klasami.naszego.modelu</span>;
+
+<span class="keyword">import</span> <span class="include">java.time.LocalDateTime</span>;
+<span class="keyword">import</span> <span class="include">javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter</span>;
+<span class="keyword">import</span> <span class="include">javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters</span>;</code></pre></div></div>
+<div class="ulist"><div class="title">Plik <code>package-info.java</code></div><ul><li><p>Zawiera dodatkowe informacje dot. dokumentacji pakietu (<em>JavaDoc</em>)</p></li><li><p>Może zawierać dodatkowe annotacje odnoszące się do całego pakietu (<code>ElementType.PACKAGE</code>)</p></li></ul></div></section><section id="slide_konfiguracja_zasobu_12"><h2>Konfiguracja zasobu (12)</h2><div class="listingblock"><div class="title">MessageBodyReader</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">DictionaryWordReader</span> <span class="directive">implements</span> MessageBodyReader&lt;DictionaryWord&gt; {
+
+    <span class="directive">public</span> <span class="type">boolean</span> isReadable(<span class="predefined-type">Class</span>&lt;?&gt; aClass, <span class="predefined-type">Type</span> type, <span class="predefined-type">Annotation</span><span class="type">[]</span> annotations,
+        MediaType mediaType) {
+            <span class="keyword">return</span> type == DictionaryWord.class;
+    }
+
+    <span class="directive">public</span> DictionaryWord readFrom(<span class="predefined-type">Class</span>&lt;DictionaryWord&gt; aClass,
+        <span class="predefined-type">Type</span> type, <span class="predefined-type">Annotation</span><span class="type">[]</span> annotations,
+        MediaType mediaType, MultivaluedMap&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt; multivaluedMap,
+        <span class="predefined-type">InputStream</span> inputStream) <span class="directive">throws</span> <span class="exception">IOException</span>, WebApplicationException {
+            JsonObject jsonObject = Json.createReader(inputStream).readObject();
+            <span class="keyword">return</span> <span class="keyword">new</span> DictionaryWord(jsonObject.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">englishWord</span><span class="delimiter">&quot;</span></span>),
+               jsonObject.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">polishWord</span><span class="delimiter">&quot;</span></span>));
+    }
+}</code></pre></div></div></section><section id="slide_konfiguracja_zasobu_13"><h2>Konfiguracja zasobu (13)</h2><div class="ulist"><ul><li><p>Interfejsy <code>MessageBodyReader</code> i <code>MessageBodyWriter</code> nie są powiązane z jakimikolwiek innymi bibliotekami poza JAX-RS</p><div class="ulist"><ul><li><p>Służą do definiowania reguł serializacji i deserializacji obiektów do Javy</p></li><li><p>Bazują na strumieniu przekazywanym bezpośrednio z / do HTTP (<code>InputStream</code>)</p></li></ul></div></li></ul></div></section><section id="slide_rozszerzenia_jax_rs"><h2>Rozszerzenia JAX-RS </h2><div class="ulist"><ul><li><p>Poza standardowymi funkcjonalnościami, specyfikacja JAX-RS umożliwia tworzenie własnych rozszerzeń</p></li><li><p>Implementacja rozszerzenia musi być jawnie zarejestrowana, bądź oznaczona adnotacją <code>@Provider</code></p><div class="ulist"><ul><li><p>Klasy takie są wyszukiwane przez JAX-RS w fazie skanowania (<em>discoverable</em>)</p></li></ul></div></li><li><p>Rodzaje / klasy <code>@Provider</code></p></li><li><p><strong>Entity providers</strong>: odpowiadają za mapowania (XML, JSON, CSV) na obiekty</p></li><li><p><strong>Context providers</strong>: zarządzanie obiektami dostępnymi w kontekście (adnotacja <code>@Context</code>)</p></li><li><p><strong>Exception providers</strong>: mapowanie wyjątków Java na odpowiednie odpowiedzi JAX-RS (klasy <code>Response</code>)</p></li></ul></div></section><section id="slide_rozszerzenia_jax_rs_2"><h2>Rozszerzenia JAX-RS (2)</h2><div class="ulist"><div class="title">Mapowanie wyjątków</div><ul><li><p><code>WebApplicationException</code> - klasa rozszerzająca <code>RuntimeException</code> i przygotowująca odpowiedni komunikat HTTP (domyślnie kod HTTP 500 - Internal Server Fault)</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">CustomNotFoundException</span> <span class="directive">extends</span> WebApplicationException {
+
+  <span class="directive">public</span> CustomNotFoundException() {
+    <span class="local-variable">super</span>(Responses.notFound().build());
+  }
+
+  <span class="directive">public</span> CustomNotFoundException(<span class="predefined-type">String</span> message) {
+    <span class="local-variable">super</span>(Response.status(Responses.NOT_FOUND).
+    entity(message).type(<span class="string"><span class="delimiter">&quot;</span><span class="content">text/plain</span><span class="delimiter">&quot;</span></span>).build());
+  }
+}</code></pre></div></div></section><section id="slide_rozszerzenia_jax_rs_3"><h2>Rozszerzenia JAX-RS (3)</h2><div class="ulist"><ul><li><p>Używanie <code>WebApplicationException</code> nie zawsze jest wygodne i wskazane</p></li><li><p>Klasa <code>ExceptionMapper</code> umożliwia mapowanie dowolnego wyjątku typu <em>runtime</em> na odpowiedni komunikat błędu HTTP</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Provider</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">EntityNotFoundMapper</span> <span class="directive">implements</span> ExceptionMapper&lt;javax.persistence.EntityNotFoundException&gt; {
+
+    <span class="directive">public</span> Response toResponse(javax.persistence.EntityNotFoundException ex) {
+        <span class="keyword">return</span> Response.status(<span class="integer">404</span>).
+          entity(ex.getMessage()).
+          type(<span class="string"><span class="delimiter">&quot;</span><span class="content">text/plain</span><span class="delimiter">&quot;</span></span>).
+          build();
+  }
+
+}</code></pre></div></div></section><section id="slide_klient_rest"><h2>Klient REST</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java">HelloMessage msg = ClientBuilder.newClient()
+    .target(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/example/api/hello/Jakub</span><span class="delimiter">&quot;</span></span>)
+    .request()
+        .accept(MediaType.APPLICATION_JSON_TYPE)
+        .get(HelloMessage.class);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java">HelloMessage message = <span class="keyword">new</span> HelloMessage(<span class="integer">5</span>,
+    <span class="string"><span class="delimiter">&quot;</span><span class="content">A message</span><span class="delimiter">&quot;</span></span>,
+    LocalDate.of(<span class="integer">2015</span>, <span class="octal">05</span>, <span class="octal">05</span>));
+
+Response response = ClientBuilder.newClient()
+    .target(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/example/api/consumes</span><span class="delimiter">&quot;</span></span>)
+    .request()
+        .post(<span class="predefined-type">Entity</span>.entity(message, MediaType.APPLICATION_JSON_TYPE));</code></pre></div></div></section><section id="slide_klient_rest_2"><h2>Klient REST</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">final</span> <span class="predefined-type">String</span> word = <span class="string"><span class="delimiter">&quot;</span><span class="content">computer</span><span class="delimiter">&quot;</span></span>;
+
+DictionaryWord dictionaryWord = ClientBuilder.newClient()
+        .register(CustomObjectMapper.class) <i class="conum" data-value="1"></i><b>(1)</b>
+        .target(url.toURI()).path(<span class="string"><span class="delimiter">&quot;</span><span class="content">translate</span><span class="delimiter">&quot;</span></span>).path(word).path(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>)
+        .request().header(<span class="string"><span class="delimiter">&quot;</span><span class="content">X-Dictionary</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">dict</span><span class="delimiter">&quot;</span></span>).get(DictionaryWord.class);
+
+assertThat(dictionaryWord.englishWord, equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">computer</span><span class="delimiter">&quot;</span></span>));
+assertThat(dictionaryWord.polishWord, equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">komputer</span><span class="delimiter">&quot;</span></span>));</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Klient REST umożliwia manualną rejestrację rozszerzeń - jeżeli nie działa automatyczne <em>discovery</em></td></tr></table></div></section><section id="slide_testy_rest"><h2>Testy REST </h2><div class="ulist"><ul><li><p>Testy integracyjne wymagają działającego serwera aplikacji lub dedykowanego frameworka testowego</p><div class="ulist"><ul><li><p>Framework testowy zależny jest on implementacji JAX-RS (Apache CXF, Jersey, RestEASY itp)</p></li><li><p>Jest najlepiej zintegrowany i najszybszy</p></li></ul></div></li><li><p>Testy z wykorzystaniem serwera wymagają dodatkowych konfiguracja</p><div class="ulist"><ul><li><p>Działają o rząd wielkości wolniej</p></li></ul></div></li></ul></div></section><section id="slide_testy_rest_2"><h2>Testy REST (2)</h2><div class="listingblock"><div class="title">Test jednostkowy</div><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">private</span> Service s = <span class="keyword">new</span> Service();
+
+<span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> should_create_HelloMessage() {
+    HelloMessage message = s.hello(<span class="string"><span class="delimiter">&quot;</span><span class="content">Jakub</span><span class="delimiter">&quot;</span></span>);
+
+    assertThat(message.getMessage(), is(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello, Jakub</span><span class="delimiter">&quot;</span></span>));
+    assertThat(message.getWhence(), is(LocalDate.now()));
+
+}</code></pre></div></div></section><section id="slide_testy_rest_3"><h2>Testy REST (3)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.glassfish.jersey.test-framework<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>jersey-test-framework-core<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.glassfish.jersey.test-framework.providers<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>jersey-test-framework-provider-inmemory<span class="tag">&lt;/artifactId&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Najprostsza, lecz ograniczona implementacja JAX-RS</td></tr></table></div>
+<div class="paragraph"><p> </p></div>
+<div class="ulist"><ul><li><p>Testowy JAX-RS provider może występować także w kilku innych wariantach</p><div class="ulist"><ul><li><p><code>grizzly2</code>, <code>jdk-http</code>, <code>jetty</code> itp</p></li></ul></div></li></ul></div></section><section id="slide_testy_rest_4"><h2>Testy REST (4)</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="directive">public</span> <span class="type">class</span> <span class="class">ProfanityResourceTest</span> <span class="directive">extends</span> JerseyTest { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> Application configure() {
+        <span class="keyword">return</span> <span class="keyword">new</span> MyRestApplication();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> should_return_escaped_phrase() {
+        <span class="comment">//.. test code</span>
+    }
+}</code></pre></div></div></section><section id="slide_testy_rest_5"><h2>Testy REST (5)</h2><div class="ulist"><ul><li><p>Uruchamiamy serwer jako Arquillian Managed container (<code>wildfly-arquillian-container-managed</code>)</p><div class="ulist"><ul><li><p>Arquillian samodzielnie uruchamia serwer jako element cyklu życia (element testów)</p></li><li><p>Lokalizacja serwera określona jest w pliku <code>arquillian.xml</code> w zmiennej <code>jbossHome</code></p></li></ul></div></li></ul></div></section><section id="slide_testy_rest_6"><h2>Testy REST (6)</h2><div class="ulist"><ul><li><p>Uruchomienie testów na zdalnym (istniejącym) serwerze aplikacji (<code>wildfly-arquillian-container-remote</code>)</p><div class="ulist"><ul><li><p>Serwera uruchomiony poprzez Docker</p></li><li><p>Serwera uruchomiony poprzez Mavena (<code>mvn wildfly:start</code> i później <code>mvn wildfly:shutdown</code>)</p></li></ul></div></li><li><p>Wykorzystuje się do tego dwa rozszerzenia Maven&#8217;a: <code>maven-surefire-plugin</code> oraz <code>maven-failsafe-plugin</code></p><div class="ulist"><ul><li><p>Rozróżniają one sposób uruchamiania testów; fazy <code>test</code> oraz <code>integration-test</code> i <code>verify</code></p></li><li><p>W trakcie procesu budowania, Maven może samodzielnie uruchomić serwer w fazie <code>pre-integration-test</code></p></li></ul></div></li></ul></div></section><section id="slide_testy_rest_7_testy_integracyjne"><h2>Testy REST (7) - testy integracyjne</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@RunWith</span>(Arquillian.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">RestEndpointIT</span> { <i class="conum" data-value="1"></i><b>(1)</b>
+
+  <span class="comment">// definicja WARa</span>
+
+  <span class="comment">// metoda testowa</span>
+
+}</code></pre></div></div></section><section><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Deployment</span>
+<span class="directive">public</span> <span class="directive">static</span> WebArchive createDeployment() {
+    <span class="predefined-type">File</span><span class="type">[]</span> deps = Maven.resolver()
+            .resolve(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.5.4</span><span class="delimiter">&quot;</span></span>)
+            .withTransitivity().asFile();
+
+    <span class="keyword">return</span> ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(deps)
+            .addClass(MyRestApplication.class)
+            .addClasses(HelloMessage.class, ConsumerResource.class);
+}</code></pre></div></div></section><section><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java">    <span class="annotation">@ArquillianResource</span> <span class="predefined-type">URL</span> baseUrl; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@RunAsClient</span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="directive">public</span> <span class="type">void</span> should_create_record() <span class="directive">throws</span> <span class="exception">URISyntaxException</span> {
+        HelloMessage message = <span class="keyword">new</span> HelloMessage(<span class="integer">5</span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">A message</span><span class="delimiter">&quot;</span></span>,
+                LocalDate.of(<span class="integer">2015</span>, <span class="octal">05</span>, <span class="octal">05</span>));
+
+        <span class="predefined-type">URI</span> uri = UriBuilder
+                .fromUri(baseUrl.toURI()).segment(<span class="string"><span class="delimiter">&quot;</span><span class="content">api</span><span class="delimiter">&quot;</span></span>).segment(<span class="string"><span class="delimiter">&quot;</span><span class="content">consumes</span><span class="delimiter">&quot;</span></span>)
+                .build();
+        Response response = ClientBuilder.newClient()
+                .target(uri)
+                .request()
+                .post(<span class="predefined-type">Entity</span>.json(message));
+
+        assertThat(response.getStatus(), is(<span class="integer">201</span>));
+    }
+
+}</code></pre></div></div></section></section>
+<section><section id="slide_restafarianizm" data-background="images/background.jpg" data-background-size="cover"><h2>RESTafarianizm</h2></section><section id="slide_rest"><h2>REST </h2><div class="dlist"><dl><dt class="hdlist1">Bazując na protokole HTTP, REST zakłada</dt><dd><div class="ulist"><ul><li><p>Komunikację klient - serwer</p><div class="ulist"><ul><li><p>SOAP można było wykorzystywać także przy innych protokołach komunikacyjnych</p></li></ul></div></li><li><p>Brak stanu (bezstanwość) serwera</p></li><li><p>Cache</p></li><li><p>Jednolity interfejs</p><div class="ulist"><ul><li><p>Jednoznaczna identyfikacja zasobu (poprzez URI)</p></li><li><p>Manipulacja zasobami poprzez ich reprezentację</p></li><li><p>Samoopisujące się wiadomości</p></li></ul></div></li></ul></div></dd></dl></div></section><section id="slide_rest_2"><h2>REST (2)</h2><div class="ulist"><ul><li><p>Komunikacja następuje w oparciu o metody HTTP</p><div class="ulist"><ul><li><p>GET, POST, PUT, DELETE</p></li></ul></div></li><li><p>Informacja zwrotna to status HTTP</p><div class="ulist"><ul><li><p>200 OK, 201 Created, 204 No Content, 400 Bad Request, 404 Not Found</p></li></ul></div></li><li><p>Dodatkowe (meta) informacje poprzez nagłówki</p><div class="ulist"><ul><li><p>Accept: application/json; charset=utf-8</p></li><li><p>Accept-encoding: gzip</p></li><li><p>Content-type: application/json; charset=utf-8</p></li></ul></div></li></ul></div></section><section id="slide_rest_3"><h2>REST (3)</h2><div class="ulist"><div class="title">REST prowadzi do ograniczeń</div><ul><li><p>Podział klient-serwer</p></li><li><p>Bezstanowość serwera</p></li><li><p>Cache</p></li><li><p>Jednolity interfejs</p><div class="ulist"><ul><li><p>Identyfikacja zasobów</p></li><li><p>Manipulacja zasobami przez reprezentacje</p></li><li><p>Samoopisujące się wiadomości</p></li><li><p>HATEOAS</p></li></ul></div></li><li><p>Podział na warstwy</p></li></ul></div></section><section id="slide_rest_4"><h2>REST (4)</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:66.6667%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Data Element</th><th class="tableblock halign-left valign-top">Modern Web Examples</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">resource</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">the intended conceptual target of a hypertext reference</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">resource identifier</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">URL, URN</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">representation</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">HTML document, JPEG image</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">representation metadata</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">media type, last-modified time</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">resource metadata</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">source link, alternates, vary</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">control data</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">if-modified-since, cache-control</p></td></tr></tbody></table></section><section id="slide_integracja_systemw_to_take_api"><h2>Integracja systemów to także API</h2><div class="dlist"><dl><dt class="hdlist1">Zasady projektowania API nadal pozostają "w cenie"</dt><dd><div class="ulist"><ul><li><p>Klientami twojego API są programiści</p></li><li><p>Pomimo tego że API działa z wykorzystaniem HTTP - nadal musi być czytelne</p><div class="ulist"><ul><li><p>zwłaszcza w wypadku błędów</p></li></ul></div></li><li><p>Wykorzystuj standardy</p></li><li><p>Zachowuj kompatybilność wsteczną i zaplanuj długie cykle życia wersji</p></li><li><p>Planuj strukturę reprezentacji zasobów</p></li></ul></div></dd></dl></div></section><section id="slide_richardson_maturity_model"><h2>Richardson Maturity Model</h2><div class="ulist"><ul><li><p>Model dojrzałości API webowego</p><div class="ulist"><ul><li><p>Na podstawie analizy istniejących interfejsów</p></li><li><p>Wykonany przez Leonard Richardson w 2008 roku</p></li></ul></div></li><li><p>Definiuje 4 poziomy dojrzałości</p></li><li><p><strong>Level 0</strong> - pojedynczy URL, jedna metoda HTTP</p><div class="ulist"><ul><li><p>Głównie serwisy SOAP XML (jak strona we Flashu)</p></li></ul></div></li><li><p><strong>Level 1</strong> - wiele adresów URL - wszystkie wykorzystujące jedną metodę HTTP</p></li><li><p><strong>Level 2</strong> - wiele adresów URL wykorzystujących metody HTTP</p></li><li><p><strong>Level 3</strong> - zasoby deklarują zależności i połączenia (linki)</p></li></ul></div></section><section id="slide_level_0"><h2>Level 0</h2><div class="imageblock white-background" style=""><div class="content"><img src="images/rest-integration-e114b.png" alt="rest integration e114b"></div></div></section><section id="slide_level_0_request"><h2>Level 0 - request</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="txt language-txt">POST /auctionServiceAPIEndpoint HTTP/1.1</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;query&gt;</span>
+  <span class="tag">&lt;params&gt;</span>
+    <span class="tag">&lt;name&gt;</span>Macbook Air<span class="tag">&lt;/name&gt;</span>
+    <span class="tag">&lt;price_from&gt;</span>0<span class="tag">&lt;/price_from&gt;</span>
+    <span class="tag">&lt;price_to&gt;</span>1000<span class="tag">&lt;/price_to&gt;</span>
+  <span class="tag">&lt;/params&gt;</span>
+<span class="tag">&lt;/query&gt;</span></code></pre></div></div></section><section id="slide_level_0_response"><h2>Level 0 - response</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="txt language-txt">HTTP/1.1 200 OK</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;items&gt;</span>
+  <span class="tag">&lt;item&gt;</span>
+    <span class="tag">&lt;id&gt;</span>123<span class="tag">&lt;/id&gt;</span>
+    <span class="tag">&lt;name&gt;</span>Macbook Air<span class="tag">&lt;/name&gt;</span>
+    <span class="tag">&lt;price&gt;</span>499<span class="tag">&lt;/price&gt;</span>
+    <span class="tag">&lt;condition&gt;</span>NEW<span class="tag">&lt;/condition&gt;</span>
+  <span class="tag">&lt;/item&gt;</span>
+<span class="tag">&lt;/items&gt;</span></code></pre></div></div></section><section id="slide_level_0_request_2"><h2>Level 0 - request</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>POST /appointmentService HTTP/1.1</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;appointmentRequest&gt;</span>
+  <span class="tag">&lt;slot</span> <span class="attribute-name">doctor</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">mjones</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">start</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1400</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">end</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1450</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;patient</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">jsmith</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/appointmentRequest&gt;</span></code></pre></div></div></section><section id="slide_level_0_request_3"><h2>Level 0 - request</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>POST http://svcs.ebay.com/services/search/FindingService/v1</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;findItemsByKeywordsRequest</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.ebay.com/marketplace/search/v1/services</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;affiliate&gt;</span>
+    <span class="tag">&lt;networkId&gt;</span>9<span class="tag">&lt;/networkId&gt;</span>
+    <span class="tag">&lt;trackingId&gt;</span>1234567890<span class="tag">&lt;/trackingId&gt;</span>
+    <span class="tag">&lt;customId&gt;</span>k-man<span class="tag">&lt;/customId&gt;</span>
+  <span class="tag">&lt;/affiliate&gt;</span>
+  <span class="tag">&lt;sortOrder&gt;</span>EndTime<span class="tag">&lt;/sortOrder&gt;</span>
+  <span class="tag">&lt;paginationInput&gt;</span>
+    <span class="tag">&lt;entriesPerPage&gt;</span>2<span class="tag">&lt;/entriesPerPage&gt;</span>
+  <span class="tag">&lt;/paginationInput&gt;</span>
+  <span class="tag">&lt;keywords&gt;</span>camalots<span class="tag">&lt;/keywords&gt;</span>
+<span class="tag">&lt;/findItemsByKeywordsRequest&gt;</span></code></pre></div></div></section><section id="slide_level_1"><h2>Level 1</h2><div class="imageblock white-background" style=""><div class="content"><img src="images/rest-integration-bd0cb.png" alt="rest integration bd0cb"></div></div></section><section id="slide_level_1_uris"><h2>Level 1 - URIs</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>POST /slots/1234/create HTTP/1.1 <i class="conum" data-value="1"></i><b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Akcja w URL</td></tr></table></div>
+<div class="paragraph"><p>&#8203;</p></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;appointmentRequest&gt;</span>
+  <span class="tag">&lt;patient</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">jsmith</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/appointmentRequest&gt;</span></code></pre></div></div></section><section id="slide_level_2"><h2>Level 2</h2><div class="imageblock white-background" style=""><div class="content"><img src="images/rest-integration-e937d.png" alt="rest integration e937d"></div></div></section><section id="slide_level_2_http"><h2>Level 2 - HTTP</h2><div class="listingblock"><div class="title">Request</div><div class="content"><pre class="CodeRay"><code>GET /doctors/mjones/slots?date=20100104&amp;status=open HTTP/1.1
+Host: royalhope.nhs.uk</code></pre></div></div>
+<div class="listingblock"><div class="title">Response</div><div class="content"><pre class="CodeRay"><code>HTTP/1.1 200 OK <i class="conum" data-value="1"></i><b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Poprawne kody odpowiedzi HTTP</td></tr></table></div>
+<div class="paragraph"><p>&#8203;</p></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;openSlotList&gt;</span>
+  <span class="tag">&lt;slot</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1234” start = </span><span class="delimiter">&quot;</span></span><span class="attribute-name">1400</span><span class="error">&quot;</span> <span class="attribute-name">end</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1450</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;slot</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">5678” start = </span><span class="delimiter">&quot;</span></span><span class="attribute-name">1600</span><span class="error">&quot;</span> <span class="attribute-name">end</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1650</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/openSlotList&gt;</span></code></pre></div></div></section><section id="slide_level_2_metody_http"><h2>Level 2  - metody HTTP</h2><div class="ulist"><div class="title">GET (Safe and Idempotent)</div><ul><li><p><code>GET /auctions</code></p><div class="ulist"><ul><li><p>&#8594; <code>HTTP/1.1 200 OK</code></p></li></ul></div></li><li><p><code>GET /auctions/1234</code></p></li><li><p><code>GET /auctions?search=Macbook+Air</code></p></li></ul></div>
+<div class="ulist"><div class="title">DELETE (<strong>Not</strong> safe and Idempotent)</div><ul><li><p><code>DELETE /auctions/1234</code></p><div class="ulist"><ul><li><p>&#8594; <code>HTTP/1.1 204 No Content</code></p></li></ul></div></li></ul></div></section><section id="slide_level_2_metody_http_2"><h2>Level 2 - metody HTTP</h2><div class="listingblock"><div class="title">Request</div><div class="content"><pre class="CodeRay"><code class="json language-json">{
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Macbook Air 2010</span><span class="delimiter">&quot;</span></span>,
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">condition</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">NEW</span><span class="delimiter">&quot;</span></span>,
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">price</span><span class="delimiter">&quot;</span></span> : <span class="integer">499</span>
+}</code></pre></div></div>
+<div class="ulist"><div class="title">POST (<strong>Not</strong> safe and <strong>not</strong> Idempotent)</div><ul><li><p><code>POST /items</code></p><div class="ulist"><ul><li><p>&#8594; <code>HTTP/1.1 201 Created</code><br>
+<code>Location: <a href="http://api.example.com/items/1235" class="bare">http://api.example.com/items/1235</a></code></p></li><li><p><strong>Serwer nadaje identyfikator</strong></p></li></ul></div></li></ul></div></section><section id="slide_level_2_metody_http_3"><h2>Level 2 - metody HTTP</h2><div class="listingblock"><div class="title">Request</div><div class="content"><pre class="CodeRay"><code class="json language-json">{
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Macbook Air 2010</span><span class="delimiter">&quot;</span></span>,
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">condition</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">LIKE_NEW</span><span class="delimiter">&quot;</span></span>,
+ <span class="key"><span class="delimiter">&quot;</span><span class="content">price</span><span class="delimiter">&quot;</span></span> : <span class="integer">498</span>
+}</code></pre></div></div>
+<div class="ulist"><div class="title">PUT (<strong>Not</strong> safe and Idempotent)</div><ul><li><p><code>PUT /items/1235</code></p></li><li><p><code>PUT /users/joe</code></p><div class="ulist"><ul><li><p>&#8594; <code>HTTP/1.1 204 No Content</code></p></li><li><p><strong>Klient przekazuje identyfikator</strong></p></li></ul></div></li></ul></div></section><section id="slide_level_2_metody_http_4"><h2>Level 2 - metody HTTP</h2><table class="tableblock frame-all grid-all" style=""><colgroup><col><col><col></colgroup><thead><tr><th class="tableblock halign-left valign-top">&#8203;</th><th class="tableblock halign-left valign-top"><code>/users</code></th><th class="tableblock halign-left valign-top"><code>/users/456</code></th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Get All</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Get a user</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">New user</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>PUT</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Update</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>DELETE</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Delete All</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Delete a user</p></td></tr></tbody></table></section><section id="slide_level_2_http_responses"><h2>Level 2 - http responses</h2><div class="ulist"><ul><li><p><code>2xx</code>: here you go</p></li><li><p><code>3xx</code>: go away</p></li><li><p><code>4xx</code>: you fucked up</p></li><li><p><code>5xx</code>: I fucked up</p></li></ul></div></section><section id="slide_level_2_http_responses_2"><h2>Level 2 - http responses</h2><div class="dlist"><dl><dt class="hdlist1">Success</dt><dd><div class="ulist"><ul><li><p>200 OK</p></li><li><p>201 CREATED</p></li><li><p>202 ACCEPTED</p></li><li><p>204 NO CONTENT</p></li></ul></div></dd><dt class="hdlist1">Redirect</dt><dd><div class="ulist"><ul><li><p>301 MOVED PERMANENTLY</p></li><li><p>303 SEE OTHER</p></li><li><p>304 NOT MODIFIED</p></li><li><p>307 TEMPORARY REDIRECT</p></li></ul></div></dd></dl></div></section><section id="slide_level_2_http_responses_3"><h2>Level 2 - http responses</h2><div class="dlist"><dl><dt class="hdlist1">User error</dt><dd><div class="ulist"><ul><li><p>400 BAD REQUEST</p></li><li><p>401 UNAUTHORIZED</p></li><li><p>403 FORBIDDEN</p></li><li><p>404 NOT FOUND</p></li><li><p>405 METHOD NOT ALLOWED</p></li><li><p>410 GONE</p></li></ul></div></dd><dt class="hdlist1">Server error</dt><dd><div class="ulist"><ul><li><p>500 INTERNAL SERVER ERROR</p></li><li><p>503 SERVICE UNAVAILABLE</p></li></ul></div></dd></dl></div></section><section id="slide_level_2_http_responses_4"><h2>Level 2 - http responses</h2><div class="paragraph center"><p><strong>Kody błędu są dla błędów</strong></p></div>
+<div class="listingblock"><div class="title">Request</div><div class="content"><pre class="CodeRay"><code>http://api.flickr.com/services/rest?
+  method=flickr.photos.people.add
+  &amp;api_key=xxx&amp;photo_id=yyy&amp;user_id=zzz</code></pre></div></div>
+<div class="listingblock"><div class="title">Response</div><div class="content"><pre class="CodeRay"><code>HTTP/200 OK</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span>
+<span class="tag">&lt;rsp</span> <span class="attribute-name">stat</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">fail</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;err</span> <span class="attribute-name">code</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">100</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">msg</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid API Key (Key has invalid format)</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/rsp&gt;</span></code></pre></div></div></section><section id="slide_level_2_2"><h2>Level 2</h2><div class="ulist"><div class="title">Kiedy jest to wystarczające?</div><ul><li><p>Małe API</p></li><li><p>CRUD</p></li><li><p>Brak wyraźnego <em>flow</em> (procesu) w obrębie aplikacji</p></li></ul></div></section><section id="slide_level_3"><h2>Level 3</h2><div class="imageblock white-background" style=""><div class="content"><img src="images/rest-integration-62a4c.png" alt="rest integration 62a4c"></div></div></section><section id="slide_level_3_2"><h2>Level 3</h2><div class="imageblock white-background" style=""><div class="content"><img src="images/rest-integration-37e21.png" alt="rest integration 37e21"></div></div></section><section id="slide_level_3_3"><h2>Level 3</h2><div class="ulist"><div class="title">Zalety</div><ul><li><p>Sterowanie przepływem danych w aplikacji</p></li><li><p>Sterowanie dostępnymi podzasobami</p></li><li><p>Luźniejsze związanie serwera i klienta</p></li><li><p>Dodatkowa dokumentacja API (jednak niewystarczająca)</p></li></ul></div>
+<div class="ulist"><div class="title">Wady</div><ul><li><p>Więcej pracy</p></li><li><p>Więcej transferu</p></li><li><p>Tworzenie API dla nieistniejącego klienta</p></li><li><p>Brak wyraźnego standardu (JSON API)</p></li></ul></div></section><section id="slide_level_3_response"><h2>Level 3 - response</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="xml language-xml"><span class="tag">&lt;appointment&gt;</span>
+  <span class="tag">&lt;slot</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1234</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">doctor</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">mjones</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">start</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1400</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">end</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">1450</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;patient</span> <span class="attribute-name">id</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">jsmith</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attribute-name">rel</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">/linkrels/appointment/addTest</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">uri</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">/slots/1234/appointment/tests</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attribute-name">rel</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">/linkrels/appointment/updateContactInfo</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">uri</span> = <span class="string"><span class="delimiter">&quot;</span><span class="content">/patients/jsmith/contactInfo</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/appointment&gt;</span></code></pre></div></div></section><section id="slide_level_3_response_2"><h2>Level 3 - response</h2><div class="listingblock"><div class="title">Hypertext Application Language</div><div class="content"><pre class="CodeRay"><code>{
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
+    "_links": {
+        "self": {
+            "href": "http://swapi.co/api/people/1/",
+            "title": "Luke Skywalker"
+        },
+        "http://swapi.co/api/rels/species": {
+            "href": "http://swapi.co/api/species/1/",
+            "title": "Human"
+        }
+    }
+}</code></pre></div></div></section><section id="slide_wersjonowanie_3_szkoy_wersjonowania"><h2>Wersjonowanie (3 szkoły wersjonowania) </h2><div class="listingblock"><div class="title">Media-type, bezpośrednio poprzez nazwę</div><div class="content"><pre class="CodeRay"><code>Request:
+GET /opengov/garbageschedule?location=Main%20Street HTTP/1.1
+Accept: application/vnd.opengov.org.garbageschedule-v2+json <i class="conum" data-value="1"></i><b>(1)</b>
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/vnd.opengov.org.garbageschedule-v2+json
+  {
+    "schedule"
+    "self": "schedule-2423",
+    "dayOfWeek": "Monday",
+    "oddOrEvenWeeks": "Odd"
+  }</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Najbardziej RESTful z RESTful; wiele różnych media-type do ślednienia</td></tr></table></div></section><section id="slide_wersjonowanie_2"><h2>Wersjonowanie (2)</h2><div class="listingblock"><div class="title">Media-type, poprzez <em>qualifier</em></div><div class="content"><pre class="CodeRay"><code>Request:
+GET /opengov/garbageschedule?location=Main%20Street HTTP/1.1
+Accept: application/vnd.opengov.org.garbageschedule+json;v=1 <i class="conum" data-value="1"></i><b>(1)</b>
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/vnd.opengov.org.garbageschedule+json;v=1
+  {
+    "schedule"
+    "self": "schedule-2423",
+    "dayOfWeek": "Monday",
+    "oddOrEvenWeeks": "Odd"
+  }</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td><em>Qualifier</em> wydaje się być łatwiejszy do implementacji</td></tr></table></div></section><section id="slide_wersjonowanie_3"><h2>Wersjonowanie (3)</h2><div class="listingblock"><div class="title">Wersja dodawana jest do URLa (domeny)</div><div class="content"><pre class="CodeRay"><code>Request:
+GET /opengov/v1/garbageschedule?location=Main%20Street HTTP/1.1 <i class="conum" data-value="1"></i><b>(1)</b>
+Accept: application/vnd.opengov.org.garbageschedule+json
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/vnd.opengov.org.garbageschedule+json
+  {
+    "schedule"
+    "self": "schedule-2423",
+    "dayOfWeek": "Monday",
+    "oddOrEvenWeeks": "Odd"
+  }</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Zło - nie używać. Potencjalnie wiele URI (uniform resource <strong>identifier</strong>) kierujących do tego samego zasobu</td></tr></table></div></section><section id="slide_ze_urle"><h2>Złe URLe</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>• http://www.acme.com/product/
+• http://www.acme.com/product/filter/cats/desc
+• http://www.acme.com/product/1234
+• http://www.acme.com/photos/product/1234
+• http://www.acme.com/photos/product/1234/new <i class="conum" data-value="1"></i><b>(1)</b>
+• http://www.acme.com/photos/product/1234/5678 <i class="conum" data-value="2"></i><b>(2)</b></code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td><code>new</code> what?</td></tr><tr><td><i class="conum" data-value="2"></i><b>2</b></td><td>PhotoID? ProductID?</td></tr></table></div></section><section id="slide_dobre_urle"><h2>Dobre URLe</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>• http://www.acme.com/products/  <i class="conum" data-value="1"></i><b>(1)</b>
+• http://www.acme.com/products/?filter=cats&amp;sort=desc <i class="conum" data-value="2"></i><b>(2)</b>
+• http://www.acme.com/products/1234 <i class="conum" data-value="3"></i><b>(3)</b>
+• http://www.acme.com/products/1234/photos/ <i class="conum" data-value="4"></i><b>(4)</b>
+• http://www.acme.com/products/1234/photos/?sort=latest
+• http://www.acme.com/products/1234/photos/5678</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Lista produktów</td></tr><tr><td><i class="conum" data-value="2"></i><b>2</b></td><td>Filtrowania</td></tr><tr><td><i class="conum" data-value="3"></i><b>3</b></td><td>Pojedynczy produkt</td></tr><tr><td><i class="conum" data-value="4"></i><b>4</b></td><td>Wszystkie zdjęcie</td></tr></table></div></section><section id="slide_przykad_z_ycia_twitter_api"><h2>Przykład z życia - Twitter API </h2><div class="ulist"><div class="title">Status Show</div><ul><li><p>GET <code><a href="http://api.twitter.com/1/statuses/show/12345.json" class="bare">http://api.twitter.com/1/statuses/show/12345.json</a></code></p></li><li><p>Problemy:</p><div class="ulist"><ul><li><p>Akcja <em>show</em> jest elementem URLa</p></li></ul></div></li><li><p>Lepiej: GET <code><a href="http://twitter.com/statuses/12345" class="bare">http://twitter.com/statuses/12345</a></code> z odpowiednim <strong>Accept</strong> header</p></li></ul></div></section><section id="slide_przykad_z_ycia_twitter_api_2"><h2>Przykład z życia - Twitter API (2)</h2><div class="ulist"><div class="title">Status Update</div><ul><li><p>POST <code><a href="http://api.twitter.com/1/statuses/update.json" class="bare">http://api.twitter.com/1/statuses/update.json</a></code></p></li><li><p>Problemy:</p><div class="ulist"><ul><li><p>Akcja <em>update</em> jest elementem URLa</p></li><li><p>Użytkownik jest <em>implicite</em> jako wynik uwierzytelnienia</p></li></ul></div></li><li><p>Lepiej: POST <code><a href="http://twitter.com/users/fabpot/statuses/" class="bare">http://twitter.com/users/fabpot/statuses/</a></code></p></li></ul></div></section><section id="slide_przykad_z_ycia_twitter_api_3"><h2>Przykład z życia - Twitter API (3)</h2><div class="ulist"><div class="title">Status destroy</div><ul><li><p>POST <code><a href="http://api.twitter.com/1/statuses/destroy/12345.json" class="bare">http://api.twitter.com/1/statuses/destroy/12345.json</a></code></p></li><li><p>Problemy:</p><div class="ulist"><ul><li><p>Akcja <em>destroy</em> jest elementem URLa</p></li><li><p>Dziwna hierarchia, do czego odnosi się ID 12345?</p></li><li><p>Umożliwia zarówno akcję POST jak i DELETE</p></li></ul></div></li><li><p>Lepiej: DELETE <code><a href="http://twitter.com/statuses/12345" class="bare">http://twitter.com/statuses/12345</a></code></p></li></ul></div></section><section id="slide_przykad_z_ycia_twitter_api_4"><h2>Przykład z życia - Twitter API (4)</h2><div class="ulist"><div class="title">Status retweets</div><ul><li><p>GET <code><a href="http://api.twitter.com/1/statuses/retweets/12345.json" class="bare">http://api.twitter.com/1/statuses/retweets/12345.json</a></code></p></li><li><p>Problemy:</p><div class="ulist"><ul><li><p>Znowu dziwne hierarchia</p></li></ul></div></li><li><p>Lepiej: GET <code><a href="http://twitter.com/statuses/12345/retweets/" class="bare">http://twitter.com/statuses/12345/retweets/</a></code></p></li></ul></div></section><section id="slide_przykad_z_ycia_twitter_api_5"><h2>Przykład z życia - Twitter API (5)</h2><div class="ulist"><div class="title">Retweet</div><ul><li><p>PUT <code><a href="http://api.twitter.com/1/statuses/retweet/12345.format" class="bare">http://api.twitter.com/1/statuses/retweet/12345.format</a></code></p></li><li><p>Problemy:</p><div class="ulist"><ul><li><p>Akcja <em>retweet</em> jest elementem URLa</p></li><li><p>Umożliwia zarówno akcję POST jak i PUT</p></li></ul></div></li><li><p>Lepiej: POST <code><a href="http://twitter.com/statuses/12345/retweets/" class="bare">http://twitter.com/statuses/12345/retweets/</a></code></p></li></ul></div></section></section>
+<section><section id="slide_charakterystyka_dobrego_api" data-background="images/background.jpg" data-background-size="cover"><h2>Charakterystyka dobrego API</h2></section><section id="slide_konstruowanie_api"><h2>Konstruowanie API</h2><div class="ulist"><ul><li><p>Każdy programista jest twórcą API</p><div class="ulist"><ul><li><p>Program składa się z modułów, każdy moduł ma API / interfejs</p></li></ul></div></li><li><p>Jako programiści mamy tendencję ponownego użycia modułów</p><div class="ulist"><ul><li><p>Tego nas uczą, to nam wpajają</p></li><li><p>Jak moduł zostanie ponownie użyty, jesteśmy na zawsze związany z zaprojektowanym API</p></li></ul></div></li></ul></div>
+<div class="paragraph center"><p><strong>Publiczne (udostępnione) API zostaje na zawsze</strong></p></div></section><section id="slide_konstruowanie_api_2"><h2>Konstruowanie API</h2><div class="quoteblock"><blockquote>My experience from the NetBeans project suggests that the API users are really creative— if there is a way to misuse something, they are likely to find it.</blockquote><div class="attribution"><cite>20 API Paradoxes</cite><br>&#8212; Jaroslav Tulach</div></div></section><section id="slide_konstruowanie_api_2_2"><h2>Konstruowanie API (2)</h2><div class="quoteblock"><blockquote>APIs are like stars, once introduced, they are here forever.</blockquote><div class="attribution"><cite>20 API Paradoxes</cite><br>&#8212; Jaroslav Tulach</div></div></section><section><h3>All programmers are API designers</h3><div class="ulist"><ul><li><p>Programy dzielimy na moduły</p></li><li><p>Granica każdego modułu to jest API</p></li><li><p>Myślenie w kategoriach udostępnianego API znacznie poprawia jakość naszego kodu</p></li></ul></div>
+<h3>APIs can be among your greatest assets or liabilities</h3><div class="ulist"><ul><li><p>Dobrze zdefiniowany moduł jest łatwy do ponownego użycia</p></li><li><p>Jeżeli moduł zacznie być używany poza naszym własnym projektem - API bardzo trudno zmienić</p></li><li><p>Źle zaprojektowane API to koszmar do utrzymania</p></li></ul></div></section><section><div class="quoteblock"><blockquote>Public APIs, like diamonds, are forever</blockquote><div class="attribution">&#8212; Joshua Bloch</div></div></section><section><h3>APIs should be easy to use and hard to misuse</h3><div class="ulist"><ul><li><p>API powinno ułatwiać robienie prostych rzeczy</p></li><li><p>umożliwiać rzeczy skomplikowane</p></li><li><p>uniemożliwiać (lub chociaż utrudniać) rzeczy błędne (złe)</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@Deployment</span>
+<span class="directive">public</span> <span class="directive">static</span> WebArchive createDeployment() {
+    <span class="predefined-type">File</span><span class="type">[]</span> jars = Maven.resolver().loadPomFromFile(<span class="string"><span class="delimiter">&quot;</span><span class="content">pom.xml</span><span class="delimiter">&quot;</span></span>)
+            .resolve(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.rometools:rome</span><span class="delimiter">&quot;</span></span>).withTransitivity().asFile();
+
+    <span class="keyword">return</span> ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(jars)
+            .addClasses(RssServlet.class)
+            .addAsWebResource(<span class="keyword">new</span> <span class="predefined-type">File</span>(WEBAPP_SRC, <span class="string"><span class="delimiter">&quot;</span><span class="content">rss.jsp</span><span class="delimiter">&quot;</span></span>));
+}</code></pre></div></div></section><section><h3>APIs should be self-documenting</h3><div class="ulist"><ul><li><p>Kod napisany w oparciu o dobre API nie powinien wymagać dokumentacji (do czytania)</p></li><li><p>Powinien wymagać minimalnej dokumentacji do pisania</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java">OAuth20Service service = <span class="keyword">new</span> ServiceBuilder()
+    .apiKey(CLIENT_ID)
+    .apiSecret(CLIENT_SECRET)
+    .callback(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/oauth2callback</span><span class="delimiter">&quot;</span></span>)
+    .scope(<span class="string"><span class="delimiter">&quot;</span><span class="content">openid profile email </span><span class="delimiter">&quot;</span></span> +
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.googleapis.com/auth/plus.login </span><span class="delimiter">&quot;</span></span> +
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.googleapis.com/auth/plus.me</span><span class="delimiter">&quot;</span></span>)
+    .build(GoogleApi20.instance());</code></pre></div></div></section><section><h3>Structure requirements as use-cases</h3><div class="ulist"><ul><li><p>Tworząc API zaczynaj od przypadków użycia, problemów które API ma rozwiązać</p></li><li><p>Wymagania zbieraj z duża dawką sceptycyzmu</p><div class="ulist"><ul><li><p>Ludzie mają tendencję mówić o rozwiązaniach a nie o problemach</p></li></ul></div></li></ul></div>
+<h3>Code the use-cases against your API</h3><div class="ulist"><ul><li><p>Przed stworzeniem implementacji API - zakoduj use-case&#8217;y</p><div class="ulist"><ul><li><p>Na przykład jako testy - jeszcze nim API będzie kompletne</p></li><li><p>Będą mogły służyć jako przykład wykorzystania API</p></li><li><p>Zweryfikują założenia które zostały poczynione</p></li></ul></div></li><li><p>Często zaoszczędzą czas implementacji błędnego API</p></li></ul></div></section><section><h3>Maintain the code for uses-cases as the API evolves</h3><div class="ulist"><ul><li><p>Taktuj przykłady / przypadki użycia / testy jak testy regresji</p><div class="ulist"><ul><li><p>Automatyczna weryfikacja czy to co miało działać nadal działa</p></li></ul></div></li></ul></div>
+<h3>Example code should be exemplary</h3><div class="ulist"><ul><li><p>Przykład powinny być najwyższej jakości</p><div class="ulist"><ul><li><p>Na nich będą się opierać kolejny programiści wykorzystujący API</p></li></ul></div></li><li><p>Napisz nie jeden przykład, lecz dwa lub trzy</p><div class="ulist"><ul><li><p>Szczególnie jeżeli API nie jest wywoływane ale jest to plugin (SPI)</p></li></ul></div></li></ul></div></section><section><h3>API design is not a solitary activity</h3><div class="ulist"><ul><li><p>Nie twórz API samodzielnie</p><div class="ulist"><ul><li><p>Zbieraj <em>feedback</em> od innych i regularnie dziel się swoją pracą</p></li><li><p>Dotyczy to także kroków pośrednich (<em>alpha, beta</em>)</p></li></ul></div></li><li><p>Nie ma najmniejszej szansy aby w pojedynkę wymyślić wszystko co ludzie mogą próbować zrobić z API</p><div class="ulist"><ul><li><p>Jak będą wyglądać próby wywołania API, użycia, w jakim kontekście</p></li></ul></div></li></ul></div></section><section><h3>Names matter</h3><div class="ulist"><ul><li><p>Nazewnictwo powinno być spójne, symetryczne</p><div class="ulist"><ul><li><p>Metody API nie mogą mieć <strong>trzech</strong> (lub więcej argumentów)</p></li><li><p>Metody (typy) API nie mogą składać się z więcej niż <strong>trzech</strong> słów</p></li></ul></div></li><li><p>API to jak mikro język którego inni będą musieli się nauczyć nim zaczną go używać</p><div class="ulist"><ul><li><p>Jeżeli ta część zostanie napisana dobrze - kod będzie się czytać jak książkę</p></li></ul></div></li><li><p>Jeżeli dobranie dobrej nazwy jest problematyczne - należy wrócić do analizy</p><div class="ulist"><ul><li><p>Pewnie łączymy zbyt wiele odpowiedzialności, koncepcji</p></li></ul></div></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="keyword">if</span> (car.speed() &gt; <span class="integer">2</span> * SPEED_LIMIT) {
+        generateAlert(<span class="string"><span class="delimiter">&quot;</span><span class="content">Watch out for cops!</span><span class="delimiter">&quot;</span></span>);
+}</code></pre></div></div></section><section><h3>When in doubt, leave it out</h3><div class="ulist"><ul><li><p>Dotyczy to funkcjonalności, klas, metod, parametrów</p><div class="ulist"><ul><li><p>Powinniśmy unikać nadmiarowości za wszelką ceną</p></li><li><p>Każdy element API musi być jednoznaczny</p></li></ul></div></li><li><p>Elementy mogą być dodane później - ale nigdy nie będą mogły być usunięte</p></li></ul></div>
+<div class="quoteblock"><blockquote>API Should Do One Thing and Do it Well</blockquote></div>
+<div class="quoteblock"><blockquote>API Should Be As Small As Possible But No Smaller</blockquote></div></section><section><h3>Principle of least astonishment</h3><div class="ulist"><ul><li><p>Principle of least surprise - zasada minimalnego zaskoczenia</p></li><li><p>Klasa powinna robić dokładnie do co obiecuje (np. na podstawie nazwy)</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@PersistenceContext</span>
+EntityManager em;
+
+<span class="directive">public</span> <span class="type">void</span> sendEmail(Email to, <span class="predefined-type">String</span> content) {
+        Email email = <span class="keyword">new</span> Email();
+        email.setReceipent(to);
+        email.setContent(content);
+        em.persist(em);
+}</code></pre></div></div></section><section id="slide_projektowanie_api_w_praktyce"><h2>Projektowanie API w praktyce</h2><div class="ulist"><ul><li><p>Spójne nazewnictwo</p></li><li><p>Symetria</p></li><li><p>Odpowiednia kolejność argumentów</p></li><li><p>Zwracane wartości</p></li></ul></div></section><section id="slide_spjne_nazewnictwo"><h2>Spójne nazewnictwo</h2><div class="ulist"><ul><li><p>API powinno wykorzystywać spójne (podobne) nazwy do realizacji podobnych czynności</p><div class="ulist"><ul><li><p>Niezależnie od tego w którym module, klasie, metodzie będzie to wykorzystywane</p></li></ul></div></li><li><p><code>java.sql.Statement</code></p><div class="ulist"><ul><li><p><code>execute(String)</code></p></li><li><p><code>executeBatch()</code></p></li><li><p><code>executeQuery(String)</code></p></li><li><p><code>executeUpdate(String)</code></p></li></ul></div></li><li><p>Wykorzystanie interfejsu <code>AutoCloseable</code> w przypadku <code>Connection</code>, <code>Statement</code> itd</p></li></ul></div></section><section id="slide_spjne_nazewnictwo_2"><h2>Spójne nazewnictwo (2)</h2><h3>Problem z <code>java.util.Observable</code></h3><div class="ulist"><ul><li><p>Wszytkie klasy wykorzystujące kolekcje używają jednego API</p><div class="ulist"><ul><li><p><code>size()</code></p></li><li><p><code>remove()</code></p></li><li><p><code>removeAll()</code></p></li></ul></div></li><li><p>W przypadku <code>java.util.Observable</code> deklaracja wygląda inaczej</p><div class="ulist"><ul><li><p><code>countObservers()</code></p></li><li><p><code>deleteObserver(Observer)</code></p></li><li><p><code>deleteObservers()</code></p></li></ul></div></li></ul></div></section><section id="slide_symetria"><h2>Symetria</h2><div class="ulist"><ul><li><p>Praktyczne wykorzystanie zasady minimalnego zaskoczenia</p></li><li><p>API <code>Collection</code> złożone jest z metod <code>add()</code>, <code>remove()</code> i <code>contains()</code> oraz słówka <code>all</code></p><div class="ulist"><ul><li><p><code>add(E)</code></p></li><li><p><code>addAll(Collection&lt;? extends E&gt;)</code></p></li><li><p><code>remove(Object)</code></p></li><li><p><code>removeAll(Collection&lt;?&gt;)</code></p></li><li><p><code>contains(Object)</code></p></li><li><p><code>containsAll(Collection&lt;?&gt;)</code></p></li></ul></div></li></ul></div></section><section id="slide_symetria_2"><h2>Symetria (2)</h2><h3>Problem z <code>java.util.Set</code></h3><div class="ulist"><ul><li><p>Interfejs <code>SortedSet</code> opisuje zbiór (<code>Set</code>) posortowany</p><div class="ulist"><ul><li><p>Metody <code>first()</code> i <code>last()</code> pozwalają pobrać pierwszy i ostatni element</p></li><li><p>Metody <code>headSet(E)</code> i <code>tailSet(E)</code> pobierają podzbiór elementów mniejszych niż <code>E</code> oraz większy lub równych <code>E</code></p></li><li><p>Pobranie pierwszego elementu mniejszego niż <code>E</code> z oryginalnego zbioru wymagało zastosowania <code>headSet(E).last()</code> lub <code>tailSet(E).first()</code></p></li></ul></div></li><li><p>Interfest <code>NavigableSet</code> jest także posortowany</p><div class="ulist"><ul><li><p>Metody <code>lower(E)</code>, <code>floor(E)</code>, <code>ceiling(E)</code> i <code>higher(E)</code> pozwalają pobrać pierwszy mniejszy (lub większy) element niż</p></li></ul></div></li></ul></div></section><section id="slide_symetria_3"><h2>Symetria (3)</h2><h3>Problem z <code>java.util.Map</code></h3><div class="ulist"><ul><li><p><code>keySet()</code> ale także <code>containsKey(Object)</code></p><div class="ulist"><ul><li><p><code>Set</code> wynika ze zwracanego typu więc wystarczyłoby <code>keys()</code></p></li></ul></div></li><li><p><code>values()</code> ale także <code>containsValue(Object)</code></p></li><li><p><code>entrySet()</code> ale nie ma <code>containsEntry(K, V)</code></p><div class="ulist"><ul><li><p><code>Set</code> wynika ze zwracanego typu więc wystarczyłoby <code>entries()</code></p></li></ul></div></li><li><p><code>put(K, V)</code> i <code>putAll(Map)</code></p></li><li><p><code>remove(Object)</code> ale nie ma <code>removeAll(Collection&lt;?&gt;)</code></p></li></ul></div></section><section id="slide_odpowiednia_kolejno_argumentw"><h2>Odpowiednia kolejność argumentów</h2><div class="ulist"><ul><li><p>Ważne jest aby zbliżone metody miały spójne sygnatury</p></li><li><p>Jest to oczywiste w przypadku przeciążanych metod</p></li><li><p>W klasie <code>java.util.Arrays</code> tablica którą modyfikujemy zawsze jest pierwszy argumentem</p><div class="ulist"><ul><li><p><code>copyOf(T[], int)</code>, <code>copyOf(boolean[], int)</code>, <code>copyOf(int[], int)</code></p></li></ul></div></li><li><p>Inne metody stosują taką samą zasadę</p><div class="ulist"><ul><li><p><code>binarySearch(Object[], Object)</code>,  <code>copyOfRange(T[], int, int)</code>, <code>fill(Object[], Object)</code>,  <code>sort(T[], Comparator&lt;? super T&gt;)</code></p></li></ul></div></li></ul></div></section><section id="slide_odpowiednia_kolejno_argumentw_2"><h2>Odpowiednia kolejność argumentów (2)</h2><h3>Problem z <code>java.lang.String</code></h3><div class="ulist"><ul><li><p>Klasa <code>String</code> definiuje dwie metody</p><div class="ulist"><ul><li><p><code>regionMatches(int, String, int, int)</code></p></li><li><p><code>regionMatches(boolean, int, String, int, int)</code></p></li></ul></div></li><li><p>Ciężko na pierwszy rzut oka zrozumieć różnicę pomiędzy metodami; opcjonalny argument umieszczony jest na początku listy argumentów</p><div class="ulist"><ul><li><p>Lepszy rozwiązaniem byłoby <code>regionMatches(int, String, int, int, boolean)</code> lub
+<code>regionMatchesIgnoreCase(int, String, int, int)</code></p></li><li><p>Znaczenie poszczególnych argumentów typu <code>int</code> nie jest oczywiste</p></li><li><p>W ogóle należy unikać argumentów tego samego typu</p></li></ul></div></li></ul></div></section><section id="slide_zwracane_wartoci"><h2>Zwracane wartości</h2><div class="ulist"><ul><li><p>Metody które zwracając pojedyncze obiekty powinny zwracać <code>null</code> jeżeli nie mają nic zwrócić</p><div class="ulist"><ul><li><p>To dość kontrowersyjne, można zwracać także <code>NullObject</code></p></li></ul></div></li><li><p>Metody które zwracają zbiory (<code>List</code>, <code>Set</code>, <code>Map</code>) zwracają pusty obiekt (nigdy <code>null</code>)</p></li><li><p>Metody powinny wyrzucać wyjątek tylko w sytuacjach wyjątkowych (błędnych)</p><div class="ulist"><ul><li><p><code>NoFundsException</code> podczas próby pobrania środków z karty kredytowej to nie jest sytuacja wyjątkowa</p></li><li><p>Nie wyrzucamy wyjątku <code>ObjectNotFoundExceptions</code> gdy nie znaleziono elementu</p></li></ul></div></li></ul></div></section><section id="slide_zwracane_wartoci_2"><h2>Zwracane wartości (2)</h2><h3>Problem z <code>java.io.File</code></h3><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="predefined-type">String</span><span class="type">[]</span> files = file.list();
+
+<span class="comment">// You should never forget this null check!</span>
+<span class="keyword">if</span> (files != <span class="predefined-constant">null</span>) { <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="keyword">for</span> (<span class="predefined-type">String</span> file : files) {
+        <span class="comment">// Do things with your file</span>
+    }
+}</code></pre></div></div></section><section id="slide_zwracane_wartoci_3"><h2>Zwracane wartości (3)</h2><h3>Problem z JPA</h3><div class="ulist"><ul><li><p><code>EntityManager.find()</code> zwraca <code>null</code> gdy encja nie została znaleziona</p></li><li><p><code>Query.getSingleResult()</code> wyrzuca wyjątek <code>NoResultException</code> gdy encja nie została znaleziona</p><div class="ulist"><ul><li><p>Wyjątek <code>NoResultException</code> to wyjątek typu <code>RuntimeException</code> więc nie jest nigdzie zadeklarowany</p></li></ul></div></li></ul></div></section><section id="slide_dokumentowanie_api"><h2>Dokumentowanie API</h2><div class="dlist"><dl><dt class="hdlist1">Kod jest naturalnym źródłem prawdy</dt><dd><div class="ulist"><ul><li><p>Powinien być prosty i zwarty <em>(Clean code)</em></p><div class="ulist"><ul><li><p>Metoda <code>java.util.List.add()</code> to dobry przykład</p></li></ul></div></li></ul></div></dd><dt class="hdlist1">Dokumentacja jest przybliżeniem prawdy dla</dt><dd><div class="ulist"><ul><li><p>Tych którzy nie znają kodu (ktoś inny go napisał)</p></li><li><p>Nie mają czasu aby czytać kod (jest zbyt skomplikowany)</p></li><li><p>Nie chcą czytać kodu (kto chce czytać kod serwera aplikacji)</p></li><li><p>Nie mają dostępu do kodu (kod jest binarny)</p></li></ul></div></dd><dt class="hdlist1">Nie zawsze jest to możliwe i co wtedy?</dt><dd><p>&#8203;</p></dd></dl></div></section><section><h3>UML nie jest dobrą formą dokumentacji</h3><div class="ulist"><ul><li><p>Są lepsze sposoby (ad-hoc)</p><div class="ulist"><ul><li><p>Niskopoziomowe diagramy rzadko kiedy są rozumiane przez programistów</p></li><li><p>Diagramy rysowane w oderwaniu od kodu często się dezaktualizują</p></li></ul></div></li><li><p>Generuj diagramy bezpośrednio z kodu (z jego fragmentów)</p></li><li><p>Używaj diagramów do pokazania dynamiki systemu (diagramy sekwencji)</p></li></ul></div>
+<h3>Nie twórz dokumentacji w Wordzie</h3><div class="ulist"><ul><li><p>Dokumentacja powinna być możliwie blisko kodu</p><div class="ulist"><ul><li><p>Dokumentacja w Wordzie (lub w wiki) wymaga bardzo dużej dyscypliny aby ją aktualizować</p></li></ul></div></li></ul></div></section><section><h3>Nie dokumentuj trywialnego kodu</h3><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="comment">/**
+ * Returns the id
+ *
+ * @return The id
+ */</span>
+<span class="directive">public</span> <span class="type">int</span> getId() {
+    <span class="keyword">return</span> id;
+}</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="comment">// Check if we still have work</span>
+<span class="keyword">if</span> (!jobs.isEmpty()) {
+
+    <span class="comment">// Get the next job for execution</span>
+    Job job = jobs.pollFirst();
+
+    <span class="comment">// ... and execute it</span>
+    job.execute();
+}</code></pre></div></div></section><section><h3>Dokumentację twórz na samym końcu</h3><div class="ulist"><ul><li><p>API rozwija się (ewoluuje) i mało kto tworzy API które pozostaje na zawsze (jak Java API)</p></li><li><p>Skup się na implementacji (opisie interfejsów, implementacji)</p><div class="ulist"><ul><li><p>Dokumentuj te elementy które przenikną do publicznego API</p></li></ul></div></li></ul></div></section></section>
+<section><section id="slide_soap_3" data-background="images/background.jpg" data-background-size="cover"><h2>SOAP</h2></section><section id="slide_soap_wiadomo"><h2>SOAP - wiadomość</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@XmlRootElement</span>(name=<span class="string"><span class="delimiter">&quot;</span><span class="content">helloMessage</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HelloMessage</span> {
+
+  <span class="annotation">@XmlElement</span>(name=<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>)
+  <span class="directive">public</span> <span class="predefined-type">String</span> getMessage() {
+    <span class="keyword">return</span> message;
+  }
+
+  <span class="directive">public</span> <span class="type">void</span> setMessage(<span class="predefined-type">String</span> message) {
+    <span class="local-variable">this</span>.message = message;
+  }
+
+  <span class="directive">private</span> <span class="predefined-type">String</span> message;
+}</code></pre></div></div></section><section id="slide_soap_usuga"><h2>SOAP - usługa</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code class="java language-java"><span class="annotation">@WebService</span>
+<span class="annotation">@Stateless</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">JaxWsService</span> {
+
+  <span class="annotation">@Inject</span>
+  Service service;
+
+  <span class="directive">public</span> HelloMessage sayHello(<span class="predefined-type">String</span> name) {
+    <span class="keyword">return</span> service.hello(name);
+  }
+
+}</code></pre></div></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'black',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'fade',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1280,
+  height: 720,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() 
+      { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/menu/menu.js' }
+  ]
+});</script></body></html>
