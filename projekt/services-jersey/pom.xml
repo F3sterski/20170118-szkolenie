@@ -20,13 +20,14 @@
     <modules>
         <module>profanity</module>
         <module>translations</module>
+        <module>google-client</module>
     </modules>
 
     <dependencies>
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160810</version>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.example.webservices.utils</groupId>
@@ -54,12 +55,6 @@
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>1.0.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
