@@ -34,7 +34,6 @@ Słówka tłumaczymy wykorzystując jedną z implementacji klasy `DictionaryClie
 
 Tłumaczenie odbywa się poprzez wywołanie URLa `http://localhost:8081/translate/{fraza}`, który zwraca listę tłumaczeń w następującej formie:
 
-
 [source, json]
 ----
 [
@@ -48,9 +47,9 @@ Tłumaczenie odbywa się poprzez wywołanie URLa `http://localhost:8081/translat
 
 === Ćwiczenie 2a
 
-Metoda `/translate/{fraza}` powinna umożliwiać także hurtowe tłumaczenie słów. Zaimplementuj dodatkową metodą przyjmującą poprzez HTTP POST listę słów (jako JSON) oraz zwracająca listę pierwszych tłumaczeń dla każdego ze słów.
+Metoda `/translate/{fraza}` umożliwia także hurtowe tłumaczenie słów. Zaimplementuj dodatkową metodą przyjmującą poprzez HTTP POST listę słów (jako JSON) oraz zwracająca listę pierwszych tłumaczeń dla każdego ze słów.
 
-Weryfikacja implementacji znajduje się w teście `TranslationResourceBatchTest`
+Weryfikacja implementacji jest w teście `TranslationResourceBatchTest`
 
 TIP: pierwsze tłumaczenia można uzyskać wykorzystując metodę `DictionaryClient#firstTranslationFor(phrase)`
 
@@ -121,3 +120,6 @@ Usługa Google wymaga wywołania zadanego adresu URL metodą POST, wraz z klucze
 ----
 
 TIP: _Payload_ można utworzyć ręcznie (jako `String`) lub użyć do tego klasy `JsonObject` (`JsonObject object = Json.createObjectBuilder()`) - a następnie wysłać metodą `post(Entity.json(str))`.
+=======
+NOTE: Konwersja nie jest możliwa automatycznie, ponieważ klasa `DictionaryWord` nie posiada domyślnego konstruktora. Należy stworzyć dedykowany mechanizm dla tej konkretnej klasy.
+
