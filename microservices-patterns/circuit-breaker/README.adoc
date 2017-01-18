@@ -1,0 +1,19 @@
+== Context
+
+The `webstock-server` is a wrapper on the http://www.webservicex.net/stockquote.asmx service; it proxies the service communication adding a 'nondeterministic' latency to the response.
+The latency is proportional to the number of unanswered call. That means:
+
+* with every request the latency increases,
+* with every response in decreases.
+
+If the client times out and sends another request immediately - the server might never answer (increasing the timeout indefinitely).
+
+== Task
+
+Client can concurrently query multiple quotes, retrying until result is retrieved. Mitigate providers latency implementing appropriate retry policies and/or circuit breaker, to allow a 'reliable' communication with the server and to avoid flooding the server with requests.
+
+== How to run
+
+The `webstock-server` can be initialized by `mvn clean package exec:java`
+
+The `webstock-client` can be run either by maven (`mvn clean package exec:java`) or through the IDE.
