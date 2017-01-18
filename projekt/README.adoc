@@ -1,0 +1,123 @@
+= Ćwiczenia
+
+== Ćwiczenie 0
+
+Upewnij się że wszystkie moduły są poprawnie zainstalowane. W tym celu w katalogu głównym wykonaj komendę
+
+`mvn clean install -fae`
+
+NOTE: Flaga `-fae` oznacza że proces budowania zakończy się mimo że niektóre testy nie będą działac poprawnie (kompilować się). Poprawienie testów będzie celem ćwiczeń.
+
+== Ćwiczenie 1: _ProfranityCheck_
+
+Celem ćwiczenie jest utworzenie serwisu zwracający informację czy dana fraza zawiera przekleństwa (w języku angielskim). W tym celu stworzymy serwis REST, korzystający z istniejącej już biblioteki która dokonuje weryfikacji przesłanej frazy.
+
+Aby sprawdzić poprawność frazy należy wywołać usługę pod adresem `http://localhost:8081/profranity/{fraza}`. Serwis zwróci dokument o następującej strukturze (przykład):
+
+
+[source, json]
+----
+{
+  "containsProfranity": false,
+  "input": "home",
+  "output": null
+}
+----
+
+TIP: Aby stworzyć serwis możesz wykorzystać istniejącą klasę `ProfanityCheckClient` która obsługuje komunikację z zewnętrznym serwisem obsługującym weryfikacje.
+
+== Ćwiczenie 2 - _Tłumaczenia_
+
+Tym razem budujemy serwis którego zadaniem będzie tłumaczeniem pojedynczych słów z angielskiego na polski.
+
+Słówka tłumaczymy wykorzystując jedną z implementacji klasy `DictionaryClient` (`DictDictionaryClient` lub `BablaDictionaryClient`). Która klasa będzie wykorzystana definiujemy poprzez nagłówek HTTP "X-Dictionary", podając albo _dict_ albo _babla_
+
+Tłumaczenie odbywa się poprzez wywołanie URLa `http://localhost:8081/translate/{fraza}`, który zwraca listę tłumaczeń w następującej formie:
+
+
+[source, json]
+----
+[
+	{
+		"englishWord": "home",
+		"polishWord": "dom"
+	},
+	//...
+]
+----
+
+=== Ćwiczenie 2a
+
+Metoda `/translate/{fraza}` powinna umożliwiać także hurtowe tłumaczenie słów. Zaimplementuj dodatkową metodą przyjmującą poprzez HTTP POST listę słów (jako JSON) oraz zwracająca listę pierwszych tłumaczeń dla każdego ze słów.
+
+Weryfikacja implementacji znajduje się w teście `TranslationResourceBatchTest`
+
+TIP: pierwsze tłumaczenia można uzyskać wykorzystując metodę `DictionaryClient#firstTranslationFor(phrase)`
+
+=== Ćwiczenie 2b
+
+We wszystkich dotychczasowych ćwiczeniach w klasach testowych operowaliśmy na niskopoziomowych klasach obsługujących JSONa. Wykorzystując test `TranslationResourceMappingTest` stwórz mechanizmy konwertujące JSONa na klasy `DictionaryWord`
+
+NOTE: Konwersja nie jest możliwa automatycznie, ponieważ klasa `DictionaryWord` nie posiada domyślnego konstruktora. Należy stworzyć dedykowany mechanizm dla tej konkretnej klasy albo poprzez implementację interfejsu `MessageBodyReader<T>` albo projektując odpowiednią klasę typu MixIn dostarczoną przez framework Jackson
+
+== Ćwiczenie 3 - _Piękny JSON_
+
+Wracamy do serwisu _Profanity_. Nasz serwis, dotychczas, zawsze zwracał pełną reprezentację obiektu:
+
+[source, json]
+----
+{
+  "containsProfranity": false,
+  "input": "This is shit",
+  "output": "This is ****"
+}
+----
+
+Jednak dla słów (bądź wyrażeń) które nie zawierają przekleństw taki dokument JSON jest nadmiarowy i element _output_ jest nadmiarowy:
+
+[source, json]
+----
+{
+  "containsProfranity": false,
+  "input": "This is ok",
+  "output": null
+}
+----
+
+Za pomocą odpowiedniej deklaracji klasy `JsonSerializer<IsSwearWord>` bądź klasy typu MixIn, bądź `MessageBodyWriter<IsSwearWord>` dodaj do aplikacji element konwertujący JSONa w odpowiedni sposób.
+
+TIP: Najprostszym rozwiązaniem jest dodanie klasy MixIn (znanej z poprzednich ćwiczeń) i oznaczenie jej adnotacją `@JsonInclude(JsonInclude.Include.NON_EMPTY)`. W pozostałych przypadkach konwersję należy przeprowadzić _ręcznie_
+
+== Ćwiczenie 4 - _REST Client_
+
+Dotychczas skupialiśmy się na pisaniu serwisów dostarczających usługi, podczas gdy klasy "kliencie" używane były tylko w testach. Teraz napiszemy klienta do zewnętrznej usługi Google Translate, dostępnej pod adresem: https://translation.googleapis.com/language/translate/v2.
+
+TIP: Stworzenie nowego klienta odbywa się poprzez `Client client = ClientBuilder.newClient();`
+
+Usługa Google wymaga wywołania zadanego adresu URL metodą POST, wraz z kluczem usługi przesłanym jako argument `key` (query parameter). Fraza do tłumaczenia przesyłana jest jako request body i może mieć następującą postać
+
+
+[source, json]
+----
+{
+   'q': 'The quick brown fox jumped over the lazy dog.',
+   'source': 'en',
+   'target': 'es',
+   'format': 'text'
+}
+----
+
+[source, json]
+----
+{
+   'q': [
+       'The quick brown fox jumped over the lazy dog.',
+       'Another sentence to translate'
+   ],
+   'source': 'en',
+   'target': 'es',
+   'format': 'text'
+}
+----
+
+TIP: _Payload_ można utworzyć ręcznie (jako `String`) lub użyć do tego klasy `JsonObject` (`JsonObject object = Json.createObjectBuilder()`) - a następnie wysłać metodą `post(Entity.json(str))`.
