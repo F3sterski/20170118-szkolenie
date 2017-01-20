@@ -34,6 +34,7 @@ Słówka tłumaczymy wykorzystując jedną z implementacji klasy `DictionaryClie
 
 Tłumaczenie odbywa się poprzez wywołanie URLa `http://localhost:8081/translate/{fraza}`, który zwraca listę tłumaczeń w następującej formie:
 
+
 [source, json]
 ----
 [
@@ -47,9 +48,9 @@ Tłumaczenie odbywa się poprzez wywołanie URLa `http://localhost:8081/translat
 
 === Ćwiczenie 2a
 
-Metoda `/translate/{fraza}` umożliwia także hurtowe tłumaczenie słów. Zaimplementuj dodatkową metodą przyjmującą poprzez HTTP POST listę słów (jako JSON) oraz zwracająca listę pierwszych tłumaczeń dla każdego ze słów.
+Metoda `/translate/{fraza}` powinna umożliwiać także hurtowe tłumaczenie słów. Zaimplementuj dodatkową metodą przyjmującą poprzez HTTP POST listę słów (jako JSON) oraz zwracająca listę pierwszych tłumaczeń dla każdego ze słów.
 
-Weryfikacja implementacji jest w teście `TranslationResourceBatchTest`
+Weryfikacja implementacji znajduje się w teście `TranslationResourceBatchTest`
 
 TIP: pierwsze tłumaczenia można uzyskać wykorzystując metodę `DictionaryClient#firstTranslationFor(phrase)`
 
@@ -120,6 +121,73 @@ Usługa Google wymaga wywołania zadanego adresu URL metodą POST, wraz z klucze
 ----
 
 TIP: _Payload_ można utworzyć ręcznie (jako `String`) lub użyć do tego klasy `JsonObject` (`JsonObject object = Json.createObjectBuilder()`) - a następnie wysłać metodą `post(Entity.json(str))`.
-=======
-NOTE: Konwersja nie jest możliwa automatycznie, ponieważ klasa `DictionaryWord` nie posiada domyślnego konstruktora. Należy stworzyć dedykowany mechanizm dla tej konkretnej klasy.
+
+
+== Ćwiczenie 5 - _SOAP Client_
+
+Pod adresem `https://arcane-spire-76209.herokuapp.com/services/ApiKeys?wsdl` znajduje się serwis udostępniający w czasie _rzeczywistym_ klucze potrzebne do skorzystania z serwisy tłumaczącego Google.
+
+Do korzystania z serwisu konieczne jest wygenerowanie klas na podstawie pliku WSDL, np. używając odpowiedniego pluginu Maven.
+
+
+[source, xml]
+----
+<plugin>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-codegen-plugin</artifactId>
+    <version>3.1.9</version>
+    <executions>
+        <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
+            <configuration>
+                <sourceRoot>${project.build.directory}/generated-sources/</sourceRoot>
+                <wsdlOptions>
+                    <wsdlOption>
+                        <wsdl>https://arcane-spire-76209.herokuapp.com/services/ApiKeys?wsdl</wsdl>
+                    </wsdlOption>
+                </wsdlOptions>
+            </configuration>
+            <goals>
+                <goal>wsdl2java</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+----
+
+
+== Ćwiczenie 6 - _Połączmy to wszystko_
+
+Czas zebrać wszystkie usługi w całośc:
+
+Jako dane wejściowe podłuży nam następujące zdanie: "This code is a piece of shitty crap". Natomiast na wyjściu spodziwamy się następującej struktury
+
+[source, json]
+----
+{
+    "profanityCheck": {
+      "containsProfranity": true,
+      "input": "{zdanie}",
+      "output": "{zdanie_poprawione}"
+    },
+    "transations": "{tłumaczenie całej frazy z Google Translate}",
+    "profanityTranslation": {
+		"englishWord": "{slowo oznaczone jako profanity}",
+		"polishWord": "{tlumaczenie}"
+	}
+}
+----
+
+TIP: Słowo które jest przekleństwe możemy odnaleźć poprzez np.`s1.substring(s2.indexOf("*"), s2.lastIndexOf("*")+1)`
+
+.Algorytm działania
+. W pierwszy kroku musimy zweryfikować czy zdanie zawiera przekleń - wywołując serwis `/profranity/`
+. Następnie tłumaczymy przekleństwo na polski (wykorzystując słownik dict.pl)
+. Pobierając aktualny klucz dostępu do serwisu Google, możemy dokonać tłumaczenie pełnego zdania
+
+Rozwiązanie może polegać na wyświetleniu wyniku działania w konsoli (nie ma konieczności budowania kolejnej usługi).
+
+Implementacja może się obyć w projekcie `final-exercise`
+
 
