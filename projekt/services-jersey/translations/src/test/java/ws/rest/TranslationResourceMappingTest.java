@@ -1,15 +1,15 @@
 package ws.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import ws.libs.dictionary.DictionaryWord;
-import ws.rest.utils.CustomObjectMapper;
-import ws.rest.utils.DictionaryWordModule;
-import ws.rest.utils.DictionaryWordReader;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ContextResolver;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -28,23 +28,28 @@ public class TranslationResourceMappingTest extends JerseyTest {
     public void should_return_single_translation() throws URISyntaxException {
         final String word = "computer";
 
-        DictionaryWord dictionaryWord = target().path("translate").path(word).path("first")
+        DictionaryWord dictionaryWord = target()
+                .register(DictionaryWordMapper.class)
                 //TODO: Register appropriate MessageBodyReader with .register() function
-                .request().header("X-Dictionary", "dict").get(DictionaryWord.class);
+                .path("translate").path(word).path("first")
+                .request()
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .header("X-Dictionary", "dict").get(DictionaryWord.class);
 
         assertThat(dictionaryWord.englishWord, equalTo("computer"));
         assertThat(dictionaryWord.polishWord, equalTo("komputer"));
     }
 
-    @Test
-    public void should_return_not_found_for_missing_word() throws URISyntaxException {
-        final String word = "yadayada";
-
-        Response response = target().path("translate").path(word).path("first")
-                .request().header("X-Dictionary", "dict").get();
-
-        assertThat(response.getStatus(), equalTo(404));
-    }
+//    public static class Dictionary2 extends DictionaryWord {
+//
+//        public Dictionary2() {
+//            super("", "");
+//        }
+//
+//        public Dictionary2(String englishWord, String polishWord) {
+//            super(englishWord, polishWord);
+//        }
+//    }
 
     @Test
     public void should_return_objects_not_json_string() throws URISyntaxException {
@@ -57,5 +62,28 @@ public class TranslationResourceMappingTest extends JerseyTest {
 
         assertThat(dictionaryWords.size(), equalTo(24));
     }
+
+    public static class DictionaryWordMapper implements ContextResolver<ObjectMapper> {
+
+        final ObjectMapper mapper;
+
+        public DictionaryWordMapper() {
+            this.mapper = new ObjectMapper();
+            this.mapper.addMixIn(DictionaryWord.class, DictionaryWordMixIn.class);
+        }
+
+        @Override
+        public ObjectMapper getContext(Class<?> aClass) {
+            return this.mapper;
+        }
+
+        public static class DictionaryWordMixIn {
+
+            public DictionaryWordMixIn(@JsonProperty("englishWord") String englishWord,
+                                       @JsonProperty("polishWord") String polishWord) {
+            }
+        }
+    }
+
 
 }
