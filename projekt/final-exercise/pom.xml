@@ -6,6 +6,7 @@
 
     <groupId>com.example.webservices</groupId>
     <artifactId>final-exercise</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -19,9 +20,37 @@
             <version>2.25</version>
         </dependency>
         <dependency>
-            <groupId>com.example.webservices.soap.client</groupId>
-            <artifactId>generated-stub-client</artifactId>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.25</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>3.1.9</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${project.build.directory}/generated-sources/</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>https://arcane-spire-76209.herokuapp.com/services/ApiKeys?wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
