@@ -17,8 +17,9 @@
 
     <modules>
         <module>libs</module>
-        <module>services-jersey</module>
         <module>services-wildfly</module>
+        <module>services-jersey</module>
+        <module>soap</module>
     </modules>
 
     <dependencyManagement>
