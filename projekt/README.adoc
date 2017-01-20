@@ -125,7 +125,7 @@ TIP: _Payload_ można utworzyć ręcznie (jako `String`) lub użyć do tego klas
 
 == Ćwiczenie 5 - _SOAP Client_
 
-Pod adresem `https://arcane-spire-76209.herokuapp.com/services/ApiKeys?wsdl` znajduje się serwis udostępniający w czasie _rzeczywistym_ klucze potrzebne do skorzystania z serwisy tłumaczącego Google.
+Pod adresem `http://api-rest-apikeys.herokuapp.com/services/ApiKeys?wsdl` znajduje się serwis udostępniający w czasie _rzeczywistym_ klucze potrzebne do skorzystania z serwisy tłumaczącego Google.
 
 Do korzystania z serwisu konieczne jest wygenerowanie klas na podstawie pliku WSDL, np. używając odpowiedniego pluginu Maven.
 
@@ -144,7 +144,7 @@ Do korzystania z serwisu konieczne jest wygenerowanie klas na podstawie pliku WS
                 <sourceRoot>${project.build.directory}/generated-sources/</sourceRoot>
                 <wsdlOptions>
                     <wsdlOption>
-                        <wsdl>https://arcane-spire-76209.herokuapp.com/services/ApiKeys?wsdl</wsdl>
+                        <wsdl>http://api-rest-apikeys.herokuapp.com/services/ApiKeys?wsdl</wsdl>
                     </wsdlOption>
                 </wsdlOptions>
             </configuration>
@@ -182,8 +182,8 @@ Jako dane wejściowe podłuży nam następujące zdanie: "This code is a piece o
 TIP: Słowo które jest przekleństwe możemy odnaleźć poprzez np.`s1.substring(s2.indexOf("*"), s2.lastIndexOf("*")+1)`
 
 .Algorytm działania
-. W pierwszy kroku musimy zweryfikować czy zdanie zawiera przekleń - wywołując serwis `/profranity/`
-. Następnie tłumaczymy przekleństwo na polski (wykorzystując słownik dict.pl)
+. W pierwszy kroku musimy zweryfikować czy zdanie zawiera przekleń - wywołując serwis `http://api-rest-profanity.herokuapp.com/profanity/{fraza}`
+. Następnie tłumaczymy przekleństwo na polski (wykorzystując słownik dict.pl) (poprzez `https://api-rest-translation.herokuapp.com/translate/{fraza}/first`)
 . Pobierając aktualny klucz dostępu do serwisu Google, możemy dokonać tłumaczenie pełnego zdania
 
 Rozwiązanie może polegać na wyświetleniu wyniku działania w konsoli (nie ma konieczności budowania kolejnej usługi).
